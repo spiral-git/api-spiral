@@ -1,0 +1,111 @@
+nHW5LPNahS22
+
+
+private array $translations = [
+        "es" => [
+            "" => "",
+            "error" => "Ocurrió un error"
+        ],
+        "en" => [
+        ]
+    ];
+
+
+posgres db
+spiralcompanypr_db
+spiralcompanypr_user
+
+O!E.6Hcu59M4au
+
+//debo ver como realizar pruebas unitarias
+
+
+ALTER TABLE "SKU_PRODUCTO"
+ADD COLUMN id_setup_producto INTEGER NOT NULL;
+
+ALTER TABLE "SKU_PRODUCTO"
+ADD CONSTRAINT fk_sku_setup_producto
+FOREIGN KEY (id_setup_producto)
+REFERENCES "PRODUCTO_SETUP"(id)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+
+ALTER TABLE "PRODUCTOS"
+ADD COLUMN status VARCHAR(255) NOT NULL;
+
+ALTER TABLE "CATEGORIAS"
+ADD CONSTRAINT fk_lenguaje
+FOREIGN KEY (id_lenguaje)
+REFERENCES "LENGUAJE"(id)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+
+ALTER TABLE "PRODUCTOS" DROP COLUMN status;
+
+ALTER TABLE "SKU_PRODUCTO" 
+ALTER COLUMN status TYPE VARCHAR(255) 
+USING CASE WHEN status = true THEN 'Activo' ELSE 'Inactivo' END;
+
+
+Route::prefix('tipo-usuario')->group(function () {
+
+    Route::post('/', [TipoUsuarioController::class, 'store']);
+    Route::get('/', [TipoUsuarioController::class, 'index']);
+    Route::get('/{name}', [TipoUsuarioController::class, 'getByName']);
+
+});
+
+
+psql -h TU_HOST -U spiralcompanypr_user -d spiralcompanypr_db -p 5432
+
+
+psql -h localhost -U spiralcompany_user -d spiralcompany_db -p 5432
+
+
+GRANT USAGE ON SCHEMA public TO spiralcompany_db;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO spiralcompany_db;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO spiralcompany_db;
+
+GRANT CREATE ON SCHEMA public TO spiralcompany_db;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
