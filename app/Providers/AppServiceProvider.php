@@ -7,12 +7,14 @@ use App\Application\Services\ImagenProductoService;
 use App\Application\Services\LenguajeService;
 use App\Application\Services\PaisProductoService;
 use App\Application\Services\PaisService;
+use App\Application\Services\ProductoBasicoService;
 use App\Application\Services\ProductoCategoriaService;
 use App\Application\Services\ProductoCotizableService;
 use App\Application\Services\ProductoService;
 use App\Application\Services\SkuService;
 use App\Application\Services\StartService;
 use App\Application\Services\TipoCuponService;
+use App\Application\Services\TipoDescuentoService;
 use App\Application\Services\TipoPagoService;
 use App\Application\Services\TipoProductoService;
 use App\Application\Services\TipoSetupService;
@@ -32,6 +34,7 @@ use App\Domain\Ports\IProductoRepository;
 use App\Domain\Ports\IProductoVarianteRepository;
 use App\Domain\Ports\ISkuRepository;
 use App\Domain\Ports\ITipoCuponRepository;
+use App\Domain\Ports\ITipoDescuentoRepository;
 use App\Domain\Ports\ITipoPagoRepository;
 use App\Domain\Ports\ITipoProductoRepository;
 use App\Domain\Ports\ITipoSetupRepository;
@@ -51,6 +54,7 @@ use App\Infrastructure\Adapters\ProductoRepository;
 use App\Infrastructure\Adapters\ProductoVarianteRepository;
 use App\Infrastructure\Adapters\SkuRepository;
 use App\Infrastructure\Adapters\TipoCuponRepository;
+use App\Infrastructure\Adapters\TipoDescuentoRepository;
 use App\Infrastructure\Adapters\TipoPagoRepository;
 use App\Infrastructure\Adapters\TipoProductoRepository;
 use App\Infrastructure\Adapters\TipoSetupRepository;
@@ -204,16 +208,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            IProductoBasicoRepository::class,
-            ProductoBasicoRepository::class
-        );
-
-        $this->app->singleton(
             IProductoVarianteRepository::class,
             ProductoVarianteRepository::class
         );
 
-         $this->app->singleton(
+        $this->app->singleton(
             IProductoPlanRepository::class,
             ProductoPlanRepository::class
         );
@@ -237,6 +236,26 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             ProductoCotizableService::class,
             ProductoCotizableService::class
+        );
+
+        $this->app->singleton(
+            ITipoDescuentoRepository::class,
+            TipoDescuentoRepository::class
+        );
+
+        $this->app->singleton(
+            TipoDescuentoService::class,
+            TipoDescuentoService::class
+        );
+
+        $this->app->singleton(
+            IProductoBasicoRepository::class,
+            ProductoBasicoRepository::class
+        );
+
+        $this->app->singleton(
+            ProductoBasicoService::class,
+            ProductoBasicoService::class
         );
 
 

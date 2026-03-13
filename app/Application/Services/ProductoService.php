@@ -4,16 +4,21 @@ namespace App\Application\Services;
 
 use App\Application\DTOs\Producto\ProductoInputDto;
 use App\Application\Mappers\MapperProductos;
+use App\Application\Services\LenguajeService;
+use App\Application\Services\TipoPagoService;
+use App\Application\Services\TipoProductoService;
 use App\Application\Validations\ProductoValidation;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IProductoRepository;
 use Exception;
-use Illuminate\Support\Facades\DB;
 
 class ProductoService
 {
 
     protected IProductoRepository $_repository;
+    protected TipoProductoService $_tipoProductoService;
+    protected TipoPagoService $_tipoPagoService;
+    protected LenguajeService $_lenguajeService;
     private array $translations = [
         "es" => [
             "error" => "Ocurrió un error"
@@ -22,16 +27,19 @@ class ProductoService
             "error" => "An error occurred"
         ]
     ];
-    public function __construct(IProductoRepository $repository)
+    public function __construct(IProductoRepository $repository,TipoProductoService $tipoProductoService, TipoPagoService $tipoPagoService, LenguajeService $lenguajeService)
     {
         $this->_repository = $repository;
+        $this->_tipoProductoService = $tipoProductoService;
+        $this->_tipoPagoService = $tipoPagoService;
+        $this->_lenguajeService = $lenguajeService;
     }
 
     public function crearProducto(ProductoInputDto $dto, string $lang): RespuestaEntity
     {
         try {
 
-            $validacionesResp = ProductoValidation::validar($dto);
+            $validacionesResp = ProductoValidation::validar($dto, $lang, $this->_tipoProductoService, $this->_tipoPagoService, $this->_lenguajeService);
 
             if (!$validacionesResp->IsSuccess) {
                 return $validacionesResp;

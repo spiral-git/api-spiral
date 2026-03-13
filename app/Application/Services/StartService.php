@@ -6,7 +6,6 @@ namespace App\Application\Services;
 use App\Application\DTOs\Usuario\UsuarioInputDto;
 use App\Application\Services\TipoUsuarioService;
 use App\Application\Services\UsuarioService;
-use App\Domain\Entity\ProductoSetupEntity;
 use App\Domain\Entity\RespuestaEntity;
 
 // aca se crean: 
@@ -25,9 +24,11 @@ class StartService
     protected TipoProductoService $_tipoProductoService;
     protected TipoSetupService $_tipoSetupService;
     protected ProductoSetupService $_productoSetupService;
+    protected TipoDescuentoService $_tipoDescuentoService;
 
 
-    public function __construct(ProductoSetupService $productoSetupService, TipoUsuarioService $usuarioTipoService, UsuarioService $usuarioService, LenguajeService $lenguajeService, PaisService $paisService, TipoCuponService $tipoCuponService, TipoPagoService $tipoPagoService, TipoProductoService $tipoProductoService, TipoSetupService $tipoSetupService)
+
+    public function __construct(ProductoSetupService $productoSetupService, TipoUsuarioService $usuarioTipoService, UsuarioService $usuarioService, LenguajeService $lenguajeService, PaisService $paisService, TipoCuponService $tipoCuponService, TipoPagoService $tipoPagoService, TipoProductoService $tipoProductoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService)
     {
         $this->_usuarioTipoService = $usuarioTipoService;
         $this->_usuarioService = $usuarioService;
@@ -40,6 +41,7 @@ class StartService
         $this->_tipoProductoService = $tipoProductoService;
         $this->_tipoSetupService = $tipoSetupService;
         $this->_productoSetupService = $productoSetupService;
+        $this->_tipoDescuentoService = $tipoDescuentoService;
     }
 
     public function Start(): RespuestaEntity
@@ -52,7 +54,7 @@ class StartService
         $this->StartTipoProducto();
         $this->StartTipoCupon();
         $this->StartTipoSetup();
-        $this->StartProductoSetup();
+        $this->StartTipoDescuento();
 
         return new RespuestaEntity("Finalizado...", true, null);
     }
@@ -63,13 +65,10 @@ class StartService
         $this->_tipoSetupService->Create("Porcentaje", "es");
     }
 
-    public function StartProductoSetup()
+    public function StartTipoDescuento()
     {
-        $setupProducto = new ProductoSetupEntity();
-        $setupProducto->Amount = 0;
-        $resp = $this->_tipoSetupService->GetByName("Fijo", "es");
-        $setupProducto->IdTipoSetup = $resp->Data->Id;
-        $this->_productoSetupService->Create($setupProducto, "es");
+        $this->_tipoDescuentoService->Create("Fijo", "es");
+        $this->_tipoDescuentoService->Create("Porcentaje", "es");
     }
 
     public function StartTipoPago()

@@ -77,6 +77,7 @@ class ProductoBasicoRepository implements IProductoBasicoRepository
                     'sku_producto' => $entity->SkuProducto,
                     'precio' => $entity->Precio,
                     'descuento' => $entity->Descuento,
+                    'id_tipo_descuento' => $entity->IdTipoDescuento
                 ]);
 
             if ($updated === 0) {

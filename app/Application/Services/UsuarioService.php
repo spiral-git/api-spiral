@@ -53,7 +53,7 @@ class UsuarioService
     {
         try {
 
-            $validations = UsuarioValidations::validar($dto);
+            $validations = UsuarioValidations::validar($dto, $lang);
 
             if (!$validations->IsSuccess) {
                 return $validations;

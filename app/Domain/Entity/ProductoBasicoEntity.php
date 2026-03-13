@@ -8,8 +8,10 @@ class ProductoBasicoEntity
     public string $SkuProducto;
     public int $Precio;
     public int $Descuento;
+    public int $IdTipoDescuento;
 
-    public SkuProductoEntity $SkuProductoEntity;
+
 
     public function __construct(){}
 }
+ 
