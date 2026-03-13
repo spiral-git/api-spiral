@@ -22,14 +22,14 @@ use App\Http\Controllers\UsuarioController;
 
 Route::prefix('base')->group(function () {
 
-    Route::get('/{lang}', [TipoCuponController::class, 'GetAll']);
-    Route::get('/{lang}', [TipoPagoController::class, 'GetAll']);
-    Route::get('/{lang}', [LenguajeController::class, 'GetAll']);
-    Route::get('/{lang}', [PaisController::class, 'GetAll']);
-    Route::get('/{lang}', [TipoProductoController::class, 'GetAll']);
-    Route::get('/{lang}', [TipoSetupController::class, 'GetAll']);
-    Route::get('/{lang}', [TipoUsuarioController::class, 'GetAll']);
-    Route::get('/{lang}', [TipoDescuentoController::class, 'GetAll']);
+    Route::get('/tipo-cupon/{lang}', [TipoCuponController::class, 'GetAll']);
+    Route::get('/tipo-pago/{lang}', [TipoPagoController::class, 'GetAll']);
+    Route::get('/lenguajes/{lang}', [LenguajeController::class, 'GetAll']);
+    Route::get('/paises/{lang}', [PaisController::class, 'GetAll']);
+    Route::get('/tipo-producto/{lang}', [TipoProductoController::class, 'GetAll']);
+    Route::get('/tipo-setup/{lang}', [TipoSetupController::class, 'GetAll']);
+    Route::get('/tipo-usuario/{lang}', [TipoUsuarioController::class, 'GetAll']);
+    Route::get('/tipo-descuento/{lang}', [TipoDescuentoController::class, 'GetAll']);
 
 });
 
