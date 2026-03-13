@@ -24,7 +24,6 @@ Route::get('/swagger-setup', function() {
     $output = [];
     $output[] = \Illuminate\Support\Facades\Artisan::call('config:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('route:clear');
-    $output[] = \Illuminate\Support\Facades\Artisan::call('cache:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('package:discover');
     $output[] = \Illuminate\Support\Facades\Artisan::call('l5-swagger:generate');
     return response()->json(['done' => true, 'output' => $output]);
