@@ -6,13 +6,13 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-use Throwable;
+// use Throwable;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -20,21 +20,25 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
-    $exceptions->render(function (ValidationException $e, $request) {
-        return response()->json([
-            "Message" => "Error de validación",
-            "IsSuccess" => false,
-            "Data" => $e->errors()
-        ], Response::HTTP_UNPROCESSABLE_ENTITY);
-    });
+        $exceptions->render(function (ValidationException $e, $request) {
+            return response()->json([
+                "Message" => "Error de validación",
+                "IsSuccess" => false,
+                "Data" => $e->errors()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        });
 
-    $exceptions->render(function (Throwable $e, $request) {
+        $exceptions->render(function (Throwable $e, $request) {
+            // Excluir rutas de swagger
+            if ($request->is('api/documentation') || $request->is('docs/*') || $request->is('api/oauth2-callback')) {
+                return null; // deja que Laravel maneje estas rutas normalmente
+            }
 
-        return response()->json([
-            "Message" => $e->getMessage(),
-            "IsSuccess" => false,
-            "Data" => null
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    });
+            return response()->json([
+                "Message" => $e->getMessage(),
+                "IsSuccess" => false,
+                "Data" => null
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        });
 
-})->create();
+    })->create();
