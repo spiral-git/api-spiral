@@ -3,36 +3,73 @@
 namespace App\Application\Validations;
 
 use App\Application\DTOs\PaisProducto\PaisProductoInputDto;
+use App\Application\Services\PaisService;
+use App\Application\Services\SkuService;
 use App\Domain\Entity\RespuestaEntity;
+use App\Infrastructure\Adapters\SkuRepository;
 
 class PaisProductoValidation
 {
-    public static function validar(PaisProductoInputDto $dto): RespuestaEntity
+
+    private static array $translations = [
+        "es" => [
+            "validation_success" => "Validación correcta",
+            "validation_error" => "Errores de validación",
+            "country_required" => "Debe enviar al menos un país",
+            "sku_required" => "El sku es obligatorio"
+        ],
+        "en" => [
+            "validation_success" => "Validation successful",
+            "validation_error" => "Validation errors",
+            "country_required" => "You must send at least one country",
+            "sku_required" => "Sku is required"
+        ]
+    ];
+    public static function validar(PaisProductoInputDto $dto, string $lang, SkuService $skuService, PaisService $paisService): RespuestaEntity
     {
         $errores = [];
 
-        self::validarIdPais($dto->IdPais, $errores);
-        self::validarSku($dto->SkuProducto, $errores);
+        self::validarPaises($dto->Paises, $errores, $paisService, $lang);
+        self::validarSku($dto->SkuProducto, $errores, $skuService, $lang);
 
         return new RespuestaEntity(
-            empty($errores) ? "Validación correcta" : "Errores de validación",
+            empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
             empty($errores),
             $errores
         );
     }
 
 
-    private static function validarIdPais(?int $valor, array &$errores): void
+    private static function validarPaises(?array $valor, array &$errores, PaisService $paisService, string $lang): void
     {
-        if (empty($valor) || $valor <= 0) {
-            $errores["idPais"] = "El id del pais es obligatorio";
+        if (empty($valor)) {
+            $errores["paises"] = self::$translations[$lang]['country_required'];
+            return;
+
+        }
+
+        foreach ($valor as $idPais) {
+
+            $resp = $paisService->GetById($idPais, $lang);
+
+            if (!$resp->IsSuccess) {
+                $errores["pais_$idPais"] = $resp->Message;
+            }
         }
     }
 
-    private static function validarSku(?string $valor, array &$errores): void
+    private static function validarSku(?string $valor, array &$errores, SkuService $skuService, string $lang): void
     {
         if (empty($valor)) {
-            $errores["sku"] = "El sku es obligatorio";
+            $errores["sku"] = self::$translations[$lang]['sku_required'];
+            return;
+
         }
+
+        $resp = $skuService->GetBySku($valor, $lang);
+        if (!$resp->IsSuccess) {
+            $errores["sku_exist"] = $resp->Message;
+        }
+
     }
 }

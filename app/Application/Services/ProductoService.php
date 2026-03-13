@@ -41,7 +41,21 @@ class ProductoService
             return $this->_repository->Create($productoEntity, $lang);
 
         } catch (Exception $e) {
-            DB::rollBack();
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+
+            return $this->_repository->GetById($id, $lang);
+
+        } catch (Exception $e) {
             return new RespuestaEntity(
                 $this->translations[$lang]['error'] ?? "",
                 false,
@@ -53,28 +67,4 @@ class ProductoService
 }
 
 
-//  if ($dto->IdTipoProducto == $respCotizacion->Data->Id) {
-//                 $idProducto = $productoResp->Data->Id;
 
-//                 $skuResp = $this->_serviceSku->crearSku($idProducto, $dto->MaximoRecursos, $dto->IdTipoSetup, $lang);
-//                 if (!$skuResp->IsSuccess) {
-//                     return $skuResp;
-//                 }
-
-//                 $setupResp = $this->_serviceSetup->Create($dto->IdTipoSetup, $dto->AmountSetup, $lang);
-//                 if (!$setupResp->IsSuccess) {
-//                     return $setupResp;
-//                 }
-
-//                 $output = new ProductoCotizableOutputDto();
-//                 $output->sku = $skuResp->Data->Sku;
-//                 $output->producto = $productoResp->Data;
-
-//                 DB::commit();
-//                 return new RespuestaEntity(
-//                     $this->translations[$lang]['product_created'] ?? "",
-//                     false,
-//                     $output
-//                 );
-
-//             }

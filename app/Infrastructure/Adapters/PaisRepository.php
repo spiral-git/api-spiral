@@ -134,4 +134,40 @@ class PaisRepository implements IPaisRepository
             );
         }
     }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+
+            $row = DB::table($this->table)
+                ->where("id", $id)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['country_not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $pais = new PaisEntity();
+            $pais->Id = $row->id;
+            $pais->Nombre = $row->nombre;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['country_found'] ?? "",
+                true,
+                $pais
+            );
+
+        } catch (Exception $e) {
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
 }

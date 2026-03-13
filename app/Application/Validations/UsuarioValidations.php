@@ -7,92 +7,127 @@ use App\Domain\Entity\RespuestaEntity;
 
 class UsuarioValidations
 {
-    public static function validar(UsuarioInputDto $dto): RespuestaEntity
+    private static array $translations = [
+        "es" => [
+            "validation_success" => "Validación correcta",
+            "validation_error" => "Errores de validación",
+
+            "name_required" => "Los nombres son obligatorios",
+            "lastname_required" => "Los apellidos son obligatorios",
+
+            "email_required" => "El correo es obligatorio",
+            "email_invalid" => "Formato de correo inválido",
+
+            "password_required" => "La contraseña es obligatoria",
+            "password_min" => "Debe tener mínimo 8 caracteres",
+            "password_upper" => "Debe contener al menos una mayúscula",
+            "password_lower" => "Debe contener al menos una minúscula",
+            "password_number" => "Debe contener al menos un número",
+
+            "phone_required" => "El teléfono obligatorio",
+            "phone_invalid" => "Formato de teléfono inválido",
+        ],
+        "en" => [
+            "validation_success" => "Validation successful",
+            "validation_error" => "Validation errors",
+
+            "name_required" => "First name is required",
+            "lastname_required" => "Last name is required",
+
+            "email_required" => "Email is required",
+            "email_invalid" => "Invalid email format",
+
+            "password_required" => "Password is required",
+            "password_min" => "Must contain at least 8 characters",
+            "password_upper" => "Must contain at least one uppercase letter",
+            "password_lower" => "Must contain at least one lowercase letter",
+            "password_number" => "Must contain at least one number",
+
+            "phone_required" => "Phone is required",
+            "phone_invalid" => "Invalid phone format",
+        ]
+    ];
+    public static function validar(UsuarioInputDto $dto, string $lang): RespuestaEntity
     {
         $errores = [];
 
-        self::validarNombres($dto->Nombres, $errores);
-        self::validarApellidos($dto->Apellidos, $errores);
-        self::validarCorreo($dto->Correo, $errores);
-        self::validarPassword($dto->Password, $errores);
-        self::validarTelefono($dto->Telefono, $errores);
+        self::validarNombres($dto->Nombres, $errores, $lang);
+        self::validarApellidos($dto->Apellidos, $errores, $lang);
+        self::validarCorreo($dto->Correo, $errores, $lang);
+        self::validarPassword($dto->Password, $errores, $lang);
+        self::validarTelefono($dto->Telefono, $errores, $lang);
 
         return new RespuestaEntity(
-            empty($errores) ? "Validación correcta" : "Errores de validación",
+            empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
             empty($errores),
             $errores
         );
     }
 
-    private static function validarNombres(?string $valor, array &$errores): void
+    private static function validarNombres(?string $valor, array &$errores, string $lang): void
     {
         if (empty($valor)) {
-            $errores["nombres"] = "Los nombres son obligatorios";
+            $errores["nombres"] = self::$translations[$lang]['name_required'];
             return;
         }
 
-        if (strlen($valor) > 100) {
-            $errores["nombres"] = "Los nombres no pueden superar 100 caracteres";
-        }
     }
 
-    private static function validarApellidos(?string $valor, array &$errores): void
+    private static function validarApellidos(?string $valor, array &$errores, string $lang): void
     {
         if (empty($valor)) {
-            $errores["apellidos"] = "Los apellidos son obligatorios";
+            $errores["apellidos"] = self::$translations[$lang]['lastname_required'];
             return;
         }
 
-        if (strlen($valor) > 100) {
-            $errores["apellidos"] = "Los apellidos no pueden superar 100 caracteres";
-        }
     }
 
-    private static function validarCorreo(?string $valor, array &$errores): void
+    private static function validarCorreo(?string $valor, array &$errores, string $lang): void
     {
         if (empty($valor)) {
-            $errores["correo"] = "El correo es obligatorio";
+            $errores["correo"] = self::$translations[$lang]['email_required'];
             return;
         }
 
         if (!filter_var($valor, FILTER_VALIDATE_EMAIL)) {
-            $errores["correo"] = "Formato de correo inválido";
+            $errores["correo"] = self::$translations[$lang]['email_invalid'];
         }
+
     }
 
-    private static function validarPassword(?string $valor, array &$errores): void
+    private static function validarPassword(?string $valor, array &$errores, string $lang): void
     {
         if (empty($valor)) {
-            $errores["password"] = "La contraseña es obligatoria";
+            $errores["password"] = self::$translations[$lang]['password_required'];
             return;
         }
 
         if (strlen($valor) < 8) {
-            $errores["password"] = "Debe tener mínimo 8 caracteres";
+            $errores["password"] = self::$translations[$lang]['password_min'];
             return;
         }
 
         if (!preg_match('/[A-Z]/', $valor)) {
-            $errores["password"] = "Debe contener al menos una mayúscula";
+            $errores["password"] = self::$translations[$lang]['password_upper'];
         }
 
         if (!preg_match('/[a-z]/', $valor)) {
-            $errores["password"] = "Debe contener al menos una minúscula";
+            $errores["password"] = self::$translations[$lang]['password_lower'];
         }
 
         if (!preg_match('/[0-9]/', $valor)) {
-            $errores["password"] = "Debe contener al menos un número";
+            $errores["password"] = self::$translations[$lang]['password_number'];
         }
     }
 
-    private static function validarTelefono(?string $valor, array &$errores): void
+    private static function validarTelefono(?string $valor, array &$errores, string $lang): void
     {
         if (empty($valor)) {
-            return;
+            $errores["telefono"] = self::$translations[$lang]['phone_required'];
         }
 
         if (!preg_match('/^[0-9+\-\s]{7,20}$/', $valor)) {
-            $errores["telefono"] = "Formato de teléfono inválido";
+            $errores["telefono"] = self::$translations[$lang]['phone_invalid'];
         }
     }
 }

@@ -5,7 +5,8 @@ namespace App\Application\DTOs\PaisProducto;
 class PaisProductoInputDto
 {
     public string $SkuProducto;
-    public int $IdPais;
+    /** @var int[] */
+    public array $Paises;
     public function __construct()
     {
     }

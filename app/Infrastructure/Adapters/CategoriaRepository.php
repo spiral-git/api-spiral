@@ -107,7 +107,7 @@ class CategoriaRepository implements ICategoriaRepository
                 $categoria = new CategoriaEntity();
                 $categoria->Id = $row->id;
                 $categoria->Nombre = $row->nombre;
-                $categoria->Status = $row->status; 
+                $categoria->Status = $row->status;
                 $categoria->IdLenguaje = $row->id_lenguaje;
                 return $categoria;
             });
@@ -131,6 +131,41 @@ class CategoriaRepository implements ICategoriaRepository
         try {
             $row = DB::table($this->table)
                 ->where("nombre", $name)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['category_not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $categoria = new CategoriaEntity();
+            $categoria->Id = $row->id;
+            $categoria->Nombre = $row->nombre;
+            $categoria->Status = $row->status;
+            $categoria->IdLenguaje = $row->id_lenguaje;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['category_found'] ?? "",
+                true,
+                $categoria
+            );
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+            $row = DB::table($this->table)
+                ->where("id", $id)
                 ->first();
 
             if (!$row) {

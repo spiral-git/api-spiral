@@ -31,12 +31,6 @@ class SkuService
     public function CrearSku(SkuInputDto $dto, string $lang): RespuestaEntity
     {
         try {
-
-            $respValidation = SkuValidation::validar($dto);
-            if(!$respValidation->IsSuccess){
-                return $respValidation;
-            }
-
             $isExito = false;
 
             $sku = new SkuProductoEntity();

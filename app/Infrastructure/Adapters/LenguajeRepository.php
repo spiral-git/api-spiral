@@ -119,4 +119,37 @@ class LenguajeRepository implements ILenguajeRepository
             );
         }
     }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+            $row = DB::table($this->table)
+                ->where("id", $id)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['language_not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $entity = new LenguajeEntity();
+            $entity->Id = $row->id;
+            $entity->Nombre = $row->nombre;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['language_found'] ?? "",
+                true,
+                $entity
+            );
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
 }

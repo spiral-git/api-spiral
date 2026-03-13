@@ -124,4 +124,40 @@ class TipoPagoRepository implements ITipoPagoRepository
             );
         }
     }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+            $row = DB::table($this->table)
+                ->where("id", $id)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $tipo_user = new TipoPagoEntity();
+            $tipo_user->Id = $row->id;
+            $tipo_user->Nombre = $row->nombre;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['found'] ?? "",
+                true,
+                $tipo_user
+            );
+
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
+
+    
 }

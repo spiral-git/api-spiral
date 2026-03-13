@@ -11,4 +11,6 @@ interface ICategoriaRepository
     public function Update(CategoriaEntity $entity, string $lang): RespuestaEntity;
     public function GetAll(int $idLenguaje, string $lang): RespuestaEntity;
     public function GetByName(string $name, string $lang): RespuestaEntity;
+    public function GetById(int $id, string $lang): RespuestaEntity;
+
 }

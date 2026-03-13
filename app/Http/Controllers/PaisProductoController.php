@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Application\DTOs\PaisProducto\PaisProductoInputDto;
 use App\Application\Services\PaisProductoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaisProductoController
@@ -20,11 +21,12 @@ class PaisProductoController
     {
 
         $lang = $request->input('lang') ?? "es";
-        $idPais = $request->input('idPais') ?? 0;
+        $paises = array_map('intval', Arr::wrap($request->input('paises')));
+        $paises = array_filter($paises, fn($c) => $c > 0);
         $sku = $request->input('sku') ?? '';
 
         $dto = new PaisProductoInputDto();
-        $dto->IdPais = $idPais;
+        $dto->Paises = $paises;
         $dto->SkuProducto = $sku;
 
         $respuesta = $this->_service->Create($dto, $lang);

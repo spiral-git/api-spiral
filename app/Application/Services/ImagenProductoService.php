@@ -8,40 +8,69 @@ use App\Domain\Entity\ImagenProductoEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IImagenRepository;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ImagenProductoService
 {
     protected IImagenRepository $_repository;
+    protected ProductoService $_productoService;
     private array $translations = [
         "es" => [
-            "error" => "Ocurrió un error"
+            "error" => "Ocurrió un error",
+            "success_created" => "Imágenes asociadas al producto correctamente",
+            "error_created" => "Presentamos un error al asociar las imágenes al producto"
         ],
         "en" => [
-            "error" => "An error occurred"
+            "error" => "An error occurred",
+            "success_created" => "Images successfully associated with the product",
+            "error_created" => "An error occurred while associating images with the product"
         ]
     ];
-    public function __construct(IImagenRepository $repository)
+    public function __construct(IImagenRepository $repository, ProductoService $productoService)
     {
         $this->_repository = $repository;
+        $this->_productoService = $productoService;
     }
 
     public function Create(ImagenProductoInputDto $dto, string $lang): RespuestaEntity
     {
+        DB::beginTransaction();
         try {
 
-            $respValidation = ImagenProductoValidation::validar($dto);
+            $respValidation = ImagenProductoValidation::validar($dto, $this->_productoService, $lang);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }
 
-            $entity = new ImagenProductoEntity();
-            $entity->IdProducto = $dto->IdProducto;
-            $entity->Ruta = $dto->Ruta;
-            $entity->Status = true;
+            foreach ($dto->Imagenes as $imagen) {
+                $entity = new ImagenProductoEntity();
+                $entity->IdProducto = $dto->IdProducto;
+                $entity->Ruta = $imagen;
+                $entity->Status = true;
 
-            return $this->_repository->Create($entity, $lang);
-            
+                $resp = $this->_repository->Create($entity, $lang);
+                if (!$resp->IsSuccess) {
+                    DB::rollBack();
+                    return new RespuestaEntity(
+                        $this->translations[$lang]['error_created'] ?? "",
+                        false,
+                        null
+                    );
+                }
+            }
+
+            DB::commit();
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['success_created'] ?? "",
+                true,
+                null
+            );
+
+
+
         } catch (Exception $e) {
+            DB::rollBack();
             return new RespuestaEntity(
                 $this->translations[$lang]['error'] ?? "",
                 false,

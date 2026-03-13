@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Application\DTOs\Producto\ProductoCotizableDto;
+use App\Application\Services\ProductoCotizableService;
+use App\Application\Services\TipoUsuarioService;
+use App\Application\Services\UsuarioService;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class ProductoCotizacionController extends BaseController
+{
+    private UsuarioService $_usuarioService;
+    private ProductoCotizableService $_service;
+
+    private TipoUsuarioService $_tipoUsuarioService;
+
+
+    public function __construct(UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService, ProductoCotizableService $service)
+    {
+        $this->_usuarioService = $usuarioService;
+        $this->_tipoUsuarioService = $tipoUsuarioService;
+        $this->_service = $service;
+        parent::__construct($this->_usuarioService, $this->_tipoUsuarioService);
+    }
+
+    public function Create(Request $request)
+    {
+        $dto = new ProductoCotizableDto();
+        $dto->IdProducto = $request->input('idProducto') ?? 0;
+        $dto->MaximoRecursos     = $request->input('maximoRecursos') ?? 0;
+        $dto->IdTipoSetup     = $request->input('idTipoSetup') ?? 0;
+        $dto->AmountSetup         = $request->input('amountSetup') ?? 0;
+        $lang   = $request->input('lang') ?? "es";
+
+        $respuesta = $this->_service->Created($dto, $lang);
+
+        return response()->json(
+            $respuesta,
+            $respuesta->IsSuccess ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST
+        );
+    }
+
+}

@@ -7,8 +7,7 @@ use App\Http\Controllers\LenguajeController;
 use App\Http\Controllers\PaisController;
 use App\Http\Controllers\PaisProductoController;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\SetupProductoController;
-use App\Http\Controllers\SkuProductoController;
+use App\Http\Controllers\ProductoCotizacionController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\TipoCuponController;
 use App\Http\Controllers\TipoPagoController;
@@ -78,14 +77,10 @@ Route::prefix('tipo-setup')->group(function () {
 Route::prefix('producto')->group(function () {
 
     Route::post('/create-base', [ProductoController::class, 'Create']);
-    Route::post('/create-sku', [SkuProductoController::class, 'Create']);
     Route::post('/create-imagen', [ImagenProductoController::class, 'Create']);
-    Route::post('/create-setup', [SetupProductoController::class, 'Create']);
     Route::post('/create-pais', [PaisProductoController::class, 'Create']);
     Route::post('/create-categoria', [CategoriaProductoController::class, 'Create']);
-
-
-
+    Route::post('/create-cotizacion', [ProductoCotizacionController::class, 'Create']);
 
 
 

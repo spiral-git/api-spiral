@@ -106,4 +106,17 @@ class CategoriaService
             );
         }
     }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+            return $this->_repository->GetById($id, $lang);
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
 }

@@ -5,7 +5,8 @@ namespace App\Application\DTOs\CategoriaProducto;
 class CategoriaProductoDto
 {
     public int $IdProducto;
-    public int $IdCategoria;
+    /** @var int[] */
+    public array $Categorias;
     public function __construct()
     {
         

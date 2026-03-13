@@ -3,37 +3,74 @@
 namespace App\Application\Validations;
 
 use App\Application\DTOs\CategoriaProducto\CategoriaProductoDto;
+use App\Application\Services\CategoriaService;
+use App\Application\Services\ProductoService;
 use App\Domain\Entity\RespuestaEntity;
 
 class CategoriaProductoValidation
 {
-    public static function validar(CategoriaProductoDto $dto): RespuestaEntity
+
+    private static array $translations = [
+        "es" => [
+            "validation_success" => "Validación correcta",
+            "validation_error" => "Errores de validación",
+            "product_id_required" => "El id del producto es obligatorio",
+            "category_required" => "Debe enviar al menos una categoría del producto"
+        ],
+        "en" => [
+            "validation_success" => "Validation successful",
+            "validation_error" => "Validation errors",
+            "product_id_required" => "Product id is required",
+            "category_required" => "You must send at least one product category"
+        ]
+    ];
+
+    public static function validar(CategoriaProductoDto $dto, ProductoService $productoService, CategoriaService $categoriaService, string $lang): RespuestaEntity
     {
         $errores = [];
 
-        self::validarIdProducto($dto->IdProducto, $errores);
-        self::validarIdCategoria($dto->IdCategoria, $errores);
+        self::validarIdProducto($dto->IdProducto, $errores, $productoService, $lang);
+        self::validarCategorias($dto->Categorias, $errores, $categoriaService, $lang);
 
         return new RespuestaEntity(
-            empty($errores) ? "Validación correcta" : "Errores de validación",
+            empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
             empty($errores),
             $errores
         );
     }
 
-    private static function validarIdProducto(?int $valor, array &$errores): void
+    private static function validarIdProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang): void
     {
         if (empty($valor) || $valor <= 0) {
-            $errores["idProducto"] = "El id del producto es obligatorio";
+            $errores["idProducto"] = self::$translations[$lang]['product_id_required'];
+            return;
+
+        }
+ 
+        $resp = $productoService->GetById($valor, $lang);
+        if (!$resp->IsSuccess) {
+            $errores["producto"] = $resp->Message;
         }
     }
 
-    private static function validarIdCategoria(?int $valor, array &$errores): void
+    private static function validarCategorias(?array $valor, array &$errores, CategoriaService $categoriaService, string $lang): void
     {
-        if (empty($valor) || $valor <= 0) {
-            $errores["idCategoria"] = "El id de la categoria es obligatorio";
+        if (empty($valor)) {
+            $errores["categorias"] = self::$translations[$lang]['category_required'];
+            return;
+
         }
+
+        foreach ($valor as $idCat) {
+
+            $resp = $categoriaService->GetById($idCat, $lang);
+
+            if (!$resp->IsSuccess) {
+                $errores["categorias_$idCat"] = $resp->Message;
+            }
+        }
+
     }
 
-    
+
 }

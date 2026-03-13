@@ -5,7 +5,8 @@ namespace App\Application\DTOs\ImagenProducto;
 class ImagenProductoInputDto
 {
     public int $IdProducto;
-    public string $Ruta;
+    /** @var string[] */
+    public array $Imagenes;
     public function __construct()
     {
 

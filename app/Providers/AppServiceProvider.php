@@ -8,6 +8,7 @@ use App\Application\Services\LenguajeService;
 use App\Application\Services\PaisProductoService;
 use App\Application\Services\PaisService;
 use App\Application\Services\ProductoCategoriaService;
+use App\Application\Services\ProductoCotizableService;
 use App\Application\Services\ProductoService;
 use App\Application\Services\SkuService;
 use App\Application\Services\StartService;
@@ -231,6 +232,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             ProductoService::class,
             ProductoService::class
+        );
+
+        $this->app->singleton(
+            ProductoCotizableService::class,
+            ProductoCotizableService::class
         );
 
 

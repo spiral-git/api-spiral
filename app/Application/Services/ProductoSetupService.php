@@ -34,11 +34,6 @@ class ProductoSetupService
     {
         try {
 
-            $respValidation = SetupValidation::validar($dto);
-            if(!$respValidation->IsSuccess){
-                return $respValidation;
-            }
-
             $entity = new ProductoSetupEntity();
             $entity->IdTipoSetup = $dto->IdTipoSetup;
             $entity->Amount = $dto->Amount;
