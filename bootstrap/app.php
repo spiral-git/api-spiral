@@ -31,7 +31,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $e, $request) {
             // Excluir rutas de swagger
             if ($request->is('api/documentation') || $request->is('docs/*') || $request->is('api/oauth2-callback')) {
-                return null; // deja que Laravel maneje estas rutas normalmente
+                return response()->json([
+                    "SwaggerError" => $e->getMessage(),
+                    "File" => $e->getFile(),
+                    "Line" => $e->getLine(),
+                ], 500);
             }
 
             return response()->json([
