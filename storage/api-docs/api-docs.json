@@ -1,0 +1,40 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Spiral Company API",
+        "description": "Documentación de la API de Spiral Company",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.spiralcompanypr.com/api",
+            "description": "Api Principal Spiral Company"
+        }
+    ],
+    "paths": {
+        "/start": {
+            "get": {
+                "tags": [
+                    "Start"
+                ],
+                "summary": "Verifica que la API esté funcionando",
+                "description": "Devuelve un objeto indicando si la API está operativa.",
+                "operationId": "5155c711a6ed580cca12dec17dd991bc",
+                "responses": {
+                    "200": {
+                        "description": "API operativa correctamente"
+                    },
+                    "400": {
+                        "description": "Error en la petición"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Start",
+            "description": "Start"
+        }
+    ]
+}
