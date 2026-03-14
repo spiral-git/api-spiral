@@ -122,6 +122,8 @@ class UsuarioService
                 return $respToken;
             }
 
+            unset($usuarioResp->Data->Password);
+            
             return new RespuestaEntity($this->translations[$lang]['login_success'], true, ["usuario" => $usuarioResp->Data, "token" => $respToken->Data->Token]);
         } catch (Exception $e) {
             return new RespuestaEntity(

@@ -15,7 +15,7 @@ class UsuarioDocs
             content: new OA\JsonContent(
                 required: ["correo", "password", "lang"],
                 properties: [
-                    new OA\Property(property: "correo", type: "string", example: "Tecnología"),
+                    new OA\Property(property: "correo", type: "string", example: ""),
                     new OA\Property(property: "password", type: "string", example: ""),
                     new OA\Property(property: "lang", type: "string", example: "es")
                 ]
@@ -60,7 +60,7 @@ class UsuarioDocs
 
     // LOGOUTALL------------------------------------------------------------------
     #[OA\Post(
-        path: "/usuario/loguot-all",
+        path: "/usuario/logout-all",
         tags: ["Usuario"],
         summary: "Cerrar Sesiones",
         security: [["bearerAuth" => []]],
