@@ -22,6 +22,12 @@ class CategoriaDocs
                 required: true,
                 schema: new OA\Schema(type: "string")
             )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Operación exitosa"
+            )
         ]
     )]
     public function getall()

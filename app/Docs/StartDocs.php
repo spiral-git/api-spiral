@@ -10,7 +10,15 @@ class StartDocs
         tags: ["Start"],
         summary: "Configuración Inicial",
         description: 'Configura el proyecto para que pueda funcionar.',
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Operación exitosa"
+            )
+        ]
     )]
-    public function start(){}
-    
+    public function start()
+    {
+    }
+
 }
