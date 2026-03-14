@@ -11,6 +11,10 @@ private array $translations = [
     ];
 
 
+git add -f .
+git commit -m "force add all files"
+git push
+
 posgres db
 spiralcompanypr_db
 spiralcompanypr_user
