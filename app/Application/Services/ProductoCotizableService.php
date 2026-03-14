@@ -38,11 +38,11 @@ class ProductoCotizableService
         $this->_tipoSetupService = $tipoSetupService;
     }
 
-    public function Created(ProductoCotizableDto $dto, string $lang): RespuestaEntity
+    public function Created(ProductoCotizableDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         try {
 
-            $validacionesResp = ProductoCotizableValidation::validar($dto, $this->_productoService,  $this->_tipoSetupService, $lang);
+            $validacionesResp = ProductoCotizableValidation::validar($dto, $this->_productoService,  $this->_tipoSetupService, $lang, $ownerId);
             $dto->AmountSetup = 0;
             $dto->MaximoRecursos = 0;
 

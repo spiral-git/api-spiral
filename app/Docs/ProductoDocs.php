@@ -22,7 +22,7 @@ class ProductoDocs
                     new OA\Property(property: "idLenguaje", type: "integer", example: 0),
                     new OA\Property(property: "nombre", type: "string", example: ""),
                     new OA\Property(property: "descripcion", type: "string", example: ""),
-                    new OA\Property(property: "lang", type: "string", example: "")
+                    new OA\Property(property: "lang", type: "string", example: "es")
                 ]
             )
         ),
@@ -51,7 +51,7 @@ class ProductoDocs
                     new OA\Property(
                         property: "idProducto",
                         type: "integer",
-                        example: 1
+                        example: 0
                     ),
                     new OA\Property(
                         property: "imagenes",
@@ -73,7 +73,7 @@ class ProductoDocs
         responses: [
             new OA\Response(
                 response: 200,
-                description: "producto base creado correctamente"
+                description: "Imagenes del producto asociadas correctamente"
             )
         ]
     )]
@@ -81,9 +81,209 @@ class ProductoDocs
     {
     }
 
-    //     Route::post('/create-pais', [PaisProductoController::class, 'Create']);
-//     Route::post('/create-categoria', [CategoriaProductoController::class, 'Create']);
-//     Route::post('/create-cotizacion', [ProductoCotizacionController::class, 'Create']);
-//     Route::post('/create-basico', [ProductoBasicoController::class, 'Create']);
+    //CREATED PRODUCTO PAISES------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-pais",
+        tags: ["Producto"],
+        summary: "Añadir paises en los que esta disponible el producto",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["sku", "paises", "lang"],
+                properties: [
+                    new OA\Property(
+                        property: "sku",
+                        type: "string",
+                        example: ""
+                    ),
+                    new OA\Property(
+                        property: "paises",
+                        type: "array", 
+                        items: new OA\Items(type: "int"),
+                        example: [
+                            0,
+                            0
+                        ]
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Paises asociados al producto correctamente"
+            )
+        ]
+    )]
+    public function created_producto_paises()
+    {
+    }
+
+    //CREATED PRODUCTO CATEGORIAS------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-categoria",
+        tags: ["Producto"],
+        summary: "Añadir categorias asociadas al producto",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["idProducto", "paises", "lang"],
+                properties: [
+                    new OA\Property(
+                        property: "idProducto",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "categorias",
+                        type: "array",
+                        items: new OA\Items(type: "int"),
+                        example: [
+                            0,
+                            0
+                        ]
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Categorias asociadas al producto correctamente"
+            )
+        ]
+    )]
+    public function created_producto_categoria()
+    {
+    }
+
+
+    //CREATED PRODUCTO COTIZABLE------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-cotizacion",
+        tags: ["Producto"],
+        summary: "Crear producto cotizable",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang"],
+                properties: [
+                    new OA\Property(
+                        property: "idProducto",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "maximoRecursos",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "amountSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Producto cotizable creado correctamente"
+            )
+        ]
+    )]
+    public function created_producto_cotizacion()
+    {
+    }
+
+
+    //CREATED PRODUCTO BASICO------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-basico",
+        tags: ["Producto"],
+        summary: "Crear producto basico",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang"],
+                properties: [
+                    new OA\Property(
+                        property: "idProducto",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "maximoRecursos",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "amountSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "precio",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoDescuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "Descuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Producto basico creado correctamente"
+            )
+        ]
+    )]
+    public function created_producto_basico()
+    {
+    }
 
 }

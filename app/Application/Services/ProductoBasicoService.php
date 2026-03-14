@@ -46,11 +46,11 @@ class ProductoBasicoService
     }
 
 
-    public function Created(ProductoBasicoInputDto $dto, string $lang): RespuestaEntity
+    public function Created(ProductoBasicoInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         try {
 
-            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService);
+            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId);
 
             if (!$validacionesResp->IsSuccess) {
                 return $validacionesResp;

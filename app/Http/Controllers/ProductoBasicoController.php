@@ -38,7 +38,20 @@ class ProductoBasicoController extends BaseController
 
         $lang   = $request->input('lang') ?? "es";
 
-        $respuesta = $this->_service->Created($dto, $lang);
+        $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $user = $resp->Data['usuario'];
+
+        $ownerId = $user->ID;
+
+        $respuesta = $this->_service->Created($dto, $lang, $ownerId);
 
         return response()->json(
             $respuesta,

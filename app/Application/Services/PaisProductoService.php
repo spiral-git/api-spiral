@@ -16,6 +16,8 @@ class PaisProductoService
     protected IPaisProductoRepository $_repository;
     protected SkuService $_skuService; 
     protected PaisService $_paisService;
+    protected ProductoService $_productoService;
+
 
     private array $translations = [
         "es" => [
@@ -30,18 +32,21 @@ class PaisProductoService
         ]
     ];
 
-    public function __construct(PaisProductoRepository $repository)
+    public function __construct(PaisProductoRepository $repository, SkuService $skuService, PaisService $paisService, ProductoService $productoService)
     {
         $this->_repository = $repository;
+        $this->_productoService = $productoService;
+        $this->_paisService = $paisService;
+        $this->_skuService = $skuService;
     }
 
-    public function Create(PaisProductoInputDto $dto, string $lang): RespuestaEntity
+    public function Create(PaisProductoInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         DB::beginTransaction();
         try {
 
             DB::beginTransaction();
-            $respValidation = PaisProductoValidation::validar($dto, $lang, $this->_skuService, $this->_paisService);
+            $respValidation = PaisProductoValidation::validar($dto, $lang, $this->_skuService, $this->_paisService, $this->_productoService, $ownerId);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }

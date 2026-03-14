@@ -22,7 +22,7 @@ class ProductoService
     private array $translations = [
         "es" => [
             "error" => "Ocurrió un error"
-        ],
+        ], 
         "en" => [
             "error" => "An error occurred"
         ]

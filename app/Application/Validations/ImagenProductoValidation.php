@@ -10,25 +10,27 @@ class ImagenProductoValidation
 {
 
     private static array $translations = [
-        "es" => [
-            "validation_success" => "Validación correcta",
-            "validation_error" => "Errores de validación",
-            "product_id_required" => "El id del producto es obligatorio",
-            "image_required" => "Debe enviar al menos una imagen"
-        ],
-        "en" => [
-            "validation_success" => "Validation successful",
-            "validation_error" => "Validation errors",
-            "product_id_required" => "Product id is required",
-            "image_required" => "You must send at least one image"
-        ]
-    ];
+    "es" => [
+        "validation_success" => "Validación correcta",
+        "validation_error" => "Errores de validación",
+        "product_id_required" => "El id del producto es obligatorio",
+        "owner_invalid" => "El owner no es dueño del producto",
+        "image_required" => "Debe enviar al menos una imagen"
+    ],
+    "en" => [
+        "validation_success" => "Validation successful",
+        "validation_error" => "Validation errors",
+        "product_id_required" => "Product id is required",
+        "owner_invalid" => "The owner does not own the product",
+        "image_required" => "You must send at least one image"
+    ]
+];
 
-    public static function validar(ImagenProductoInputDto $dto, ProductoService $productoService, string $lang): RespuestaEntity
+    public static function validar(ImagenProductoInputDto $dto, ProductoService $productoService, string $lang, int $ownerId): RespuestaEntity
     {
         $errores = [];
 
-        self::validarIdProducto($dto->IdProducto, $errores, $productoService, $lang);
+        self::validarIdProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId);
         self::validarImagenes($dto->Imagenes, $errores, $lang);
 
         return new RespuestaEntity(
@@ -38,7 +40,7 @@ class ImagenProductoValidation
         );
     }
 
-    private static function validarIdProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang): void
+    private static function validarIdProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId): void
     {
         if (empty($valor) || $valor <= 0) {
             $errores["idProducto"] = self::$translations[$lang]['product_id_required'];
@@ -49,6 +51,12 @@ class ImagenProductoValidation
         $resp = $productoService->GetById($valor, $lang);
         if (!$resp->IsSuccess) {
             $errores["producto"] = $resp->Message;
+            return;
+        }
+
+        if($resp->Data->IdOwner != $ownerId){
+            $errores["producto"] = self::$translations[$lang]['owner_invalid'];
+            return;
         }
 
     }

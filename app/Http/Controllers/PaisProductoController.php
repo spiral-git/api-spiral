@@ -4,17 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Application\DTOs\PaisProducto\PaisProductoInputDto;
 use App\Application\Services\PaisProductoService;
+use App\Application\Services\TipoUsuarioService;
+use App\Application\Services\UsuarioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
-class PaisProductoController
+class PaisProductoController extends BaseController
 {
     private PaisProductoService $_service;
+    private UsuarioService $_usuarioService;
+    private TipoUsuarioService $_tipoUsuarioService;
 
-    public function __construct(PaisProductoService $service)
+    public function __construct(PaisProductoService $service, UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService)
     {
         $this->_service = $service;
+        $this->_usuarioService = $usuarioService;
+        $this->_tipoUsuarioService = $tipoUsuarioService;
+        parent::__construct($this->_usuarioService, $this->_tipoUsuarioService);
     }
 
     public function Create(Request $request)
@@ -29,7 +36,19 @@ class PaisProductoController
         $dto->Paises = $paises;
         $dto->SkuProducto = $sku;
 
-        $respuesta = $this->_service->Create($dto, $lang);
+        $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $user = $resp->Data['usuario'];
+        $ownerId = $user->ID;
+
+        $respuesta = $this->_service->Create($dto, $lang, $ownerId);
 
         return response()->json(
             $respuesta,

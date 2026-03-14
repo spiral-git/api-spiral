@@ -36,12 +36,12 @@ class ProductoCategoriaService
         $this->_productoService = $productoService;
     }
 
-    public function Create(CategoriaProductoDto $dto, string $lang): RespuestaEntity
+    public function Create(CategoriaProductoDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         DB::beginTransaction();
         try {
 
-            $respValidation = CategoriaProductoValidation::validar($dto, $this->_productoService, $this->_categoriaService, $lang);
+            $respValidation = CategoriaProductoValidation::validar($dto, $this->_productoService, $this->_categoriaService, $lang, $ownerId);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }

@@ -16,22 +16,24 @@ class ProductoBasicoValidation
         "validation_error" => "Errores de validación",
         "validation_idproducto" => "El id del producto es obligatorio",
         "validation_id_tiposetup" => "El Id del setup es obligatorio",
-        "validation_id_tipodescuento" => "El Id del tipo de descuento es obligatorio"
+        "validation_id_tipodescuento" => "El Id del tipo de descuento es obligatorio",
+        "owner_invalid" => "El owner no es dueño del producto",
     ],
     "en" => [
         "validation_success" => "Validation successful",
         "validation_error" => "Validation errors",
         "validation_idproducto" => "Product id is required",
         "validation_id_tiposetup" => "Setup id is required",
-        "validation_id_tipodescuento" => "Discount type id is required"
+        "validation_id_tipodescuento" => "Discount type id is required",
+         "owner_invalid" => "The owner does not own the product",
     ]
 ];
 
-    public static function validar(ProductoBasicoInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService): RespuestaEntity 
+    public static function validar(ProductoBasicoInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService, int $ownerId): RespuestaEntity 
     {
         $errores = [];
 
-        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang);
+        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId);
         self::validarTipoSetup($dto->IdTipoSetup, $errores, $tipoSetupService, $lang);
         self::validarTipoDescuento($dto->IdTipoDescuento, $errores, $tipoDescuentoService, $lang);
 
@@ -44,7 +46,7 @@ class ProductoBasicoValidation
     }
 
 
-    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang): void
+    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId): void
     {
         if (empty($valor) || $valor <= 0) {
             $errores["idProducto"] = self::$translations[$lang]['validation_idproducto'];
@@ -55,6 +57,12 @@ class ProductoBasicoValidation
         $resp = $productoService->GetById($valor, $lang);
         if (!$resp->IsSuccess) {
             $errores["producto"] = $resp->Message;
+            return;
+        }
+
+        if($resp->Data->IdOwner != $ownerId){
+            $errores["producto"] = self::$translations[$lang]['owner_invalid'];
+            return;
         }
     }
 

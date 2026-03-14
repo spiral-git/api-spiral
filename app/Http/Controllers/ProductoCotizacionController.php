@@ -29,12 +29,25 @@ class ProductoCotizacionController extends BaseController
     {
         $dto = new ProductoCotizableDto();
         $dto->IdProducto = $request->input('idProducto') ?? 0;
-        $dto->MaximoRecursos     = $request->input('maximoRecursos') ?? 0;
-        $dto->IdTipoSetup     = $request->input('idTipoSetup') ?? 0;
-        $dto->AmountSetup         = $request->input('amountSetup') ?? 0;
-        $lang   = $request->input('lang') ?? "es";
+        $dto->MaximoRecursos = $request->input('maximoRecursos') ?? 0;
+        $dto->IdTipoSetup = $request->input('idTipoSetup') ?? 0;
+        $dto->AmountSetup = $request->input('amountSetup') ?? 0;
+        $lang = $request->input('lang') ?? "es";
 
-        $respuesta = $this->_service->Created($dto, $lang);
+        $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $user = $resp->Data['usuario'];
+
+        $ownerId = $user->ID;
+
+        $respuesta = $this->_service->Created($dto, $lang, $ownerId);
 
         return response()->json(
             $respuesta,

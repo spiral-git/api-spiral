@@ -32,12 +32,12 @@ class ImagenProductoService
         $this->_productoService = $productoService;
     }
 
-    public function Create(ImagenProductoInputDto $dto, string $lang): RespuestaEntity
+    public function Create(ImagenProductoInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         DB::beginTransaction();
         try {
 
-            $respValidation = ImagenProductoValidation::validar($dto, $this->_productoService, $lang);
+            $respValidation = ImagenProductoValidation::validar($dto, $this->_productoService, $lang, $ownerId);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }

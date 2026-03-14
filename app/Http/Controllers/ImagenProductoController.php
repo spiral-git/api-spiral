@@ -46,7 +46,11 @@ class ImagenProductoController extends BaseController
             );
         }
 
-        $respuesta = $this->_service->Create($dto, $lang);
+        $user = $resp->Data['usuario'];
+
+        $ownerId = $user->ID;
+
+        $respuesta = $this->_service->Create($dto, $lang, $ownerId);
 
         return response()->json(
             $respuesta,
