@@ -6,8 +6,6 @@ use App\Application\Services\StartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\Response;
-// use OpenApi\Attributes as OA;
-
 class StartController extends Controller
 {
     private StartService $service;
@@ -17,12 +15,6 @@ class StartController extends Controller
         $this->service = $service;
     }
 
-    // #[OA\Get(
-    //     path: '/start',
-    //     summary: 'Verifica que la API esté funcionando',
-    //     description: 'Devuelve un objeto indicando si la API está operativa.',
-    //     tags: ['Start']
-    // )]
     public function Start()
     {
         $respuesta = $this->service->Start();

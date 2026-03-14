@@ -28,21 +28,31 @@ class CategoriaController extends BaseController
         $respuesta = $this->_service->GetAll($idlenguaje, $lang);
         return response()->json(
             $respuesta,
-            $respuesta->IsSuccess ? Response::HTTP_OK  : Response::HTTP_BAD_REQUEST
+            $respuesta->IsSuccess ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST
         );
     }
 
     public function Create(Request $request)
     {
+
         $name = $request->input('name') ?? "";
         $idLenguaje = $request->input('idLenguaje') ?? 0;
         $lang = $request->input('lang') ?? "es";
+
+        $resp = $this->validarTokenHeader("ADMINISTRADOR", $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
 
         $respuesta = $this->_service->Create($name, $idLenguaje, $lang);
 
         return response()->json(
             $respuesta,
-            $respuesta->IsSuccess ? Response::HTTP_OK  : Response::HTTP_BAD_REQUEST
+            $respuesta->IsSuccess ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST
         );
     }
 
@@ -54,11 +64,20 @@ class CategoriaController extends BaseController
         $status = $request->input('status') ?? true;
         $lang = $request->input('lang') ?? "es";
 
+        $resp = $this->validarTokenHeader("ADMINISTRADOR", $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
         $respuesta = $this->_service->Update($name, $idLenguaje, $id, $status, $lang);
 
         return response()->json(
             $respuesta,
-            $respuesta->IsSuccess ? Response::HTTP_OK  : Response::HTTP_BAD_REQUEST
+            $respuesta->IsSuccess ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST
         );
     }
 }

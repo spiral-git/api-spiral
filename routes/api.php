@@ -20,13 +20,36 @@ use App\Http\Controllers\TipoUsuarioController;
 use App\Http\Controllers\UsuarioController;
 
 
+Route::prefix('start')->group(function () {
+    Route::get('/', [StartController::class, 'Start']);
+});
+
 Route::get('/swagger-setup', function() {
+
     $output = [];
     $output[] = \Illuminate\Support\Facades\Artisan::call('config:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('route:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('package:discover');
     $output[] = \Illuminate\Support\Facades\Artisan::call('l5-swagger:generate');
     return response()->json(['done' => true, 'output' => $output]);
+
+});
+
+Route::prefix('usuario')->group(function () {
+
+    Route::post('/login', [UsuarioController::class, 'login']);
+    Route::post('/loguot', [UsuarioController::class, 'logout']);
+    Route::post('/logout-all', [UsuarioController::class, 'logoutAll']);
+    Route::post('/create', [UsuarioController::class, 'crearUsuario']);
+
+});
+
+Route::prefix('categoria')->group(function () {
+
+    Route::get('/{idlenguaje}/{lang}', [CategoriaController::class, 'GetAll']);
+    Route::post('/create', [CategoriaController::class, 'Create']);
+    Route::put('/update', [CategoriaController::class, 'Update']);
+
 });
 
 Route::prefix('base')->group(function () {
@@ -42,21 +65,6 @@ Route::prefix('base')->group(function () {
 
 });
 
-Route::prefix('start')->group(function () {
-
-    Route::get('/', [StartController::class, 'Start']);
-
-});
-
-Route::prefix('usuario')->group(function () {
-
-    Route::post('/login', [UsuarioController::class, 'login']);
-    Route::post('/loguot', [UsuarioController::class, 'logout']);
-    Route::post('/logout-all', [UsuarioController::class, 'logoutAll']);
-    Route::post('/create', [UsuarioController::class, 'crearUsuario']);
-
-});
-
 Route::prefix('producto')->group(function () {
 
     Route::post('/create-base', [ProductoController::class, 'Create']);
@@ -66,11 +74,6 @@ Route::prefix('producto')->group(function () {
     Route::post('/create-cotizacion', [ProductoCotizacionController::class, 'Create']);
     Route::post('/create-basico', [ProductoBasicoController::class, 'Create']);
 
-
 });
 
-Route::prefix('categoria')->group(function () {
-    Route::get('/{idlenguaje}/{lang}', [CategoriaController::class, 'GetAll']);
-    Route::post('/create', [CategoriaController::class, 'Create']);
-    Route::put('/update', [CategoriaController::class, 'Update']);
-});
+

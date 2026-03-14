@@ -24,15 +24,11 @@ class UsuarioController extends BaseController
 
     public function login(Request $request)
     {
-
-        $validated = $request->validate([
-            'correo' => 'required|string|max:100',
-            'password' => 'required|string|min:6|max:50',
-        ]);
-
         $lang = $request->input('lang') ?? "es";
+        $correo = $request->input('correo') ?? "";
+        $password = $request->input('password') ?? "";
 
-        $respuesta = $this->_service->Login($validated['correo'], $validated['password'], $lang);
+        $respuesta = $this->_service->Login($correo, $password, $lang);
 
         return response()->json(
             $respuesta,
@@ -111,5 +107,4 @@ class UsuarioController extends BaseController
         );
     }
 
-    //falta actualizar usuario y contraseña
 }

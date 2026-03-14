@@ -13,4 +13,11 @@ use OpenApi\Attributes as OA;
     url: 'https://api.spiralcompanypr.com/api',
     description: 'Api Principal Spiral Company'
 )]
+
+#[OA\SecurityScheme(
+    securityScheme: "bearerAuth",
+    type: "http",
+    scheme: "bearer",
+    bearerFormat: "JWT"
+)]
 class OpenApi {}
