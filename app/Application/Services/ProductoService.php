@@ -45,12 +45,6 @@ class ProductoService
                 return $validacionesResp;
             }
 
-            return new RespuestaEntity(
-                "Esta despues de aca",
-                false,
-                null
-            );
-
             $productoEntity = MapperProductos::inputDtoToEntity($dto);
             return $this->_repository->Create($productoEntity, $lang);
 

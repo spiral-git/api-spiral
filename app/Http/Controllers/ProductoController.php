@@ -46,7 +46,7 @@ class ProductoController extends BaseController
 
         $user = $resp->Data['usuario'];
 
-        $dto->IdOwner = $user->ID;
+        $dto->IdOwner = $user->Id;
 
         $respuesta = $this->_service->crearProducto($dto, $lang);
 

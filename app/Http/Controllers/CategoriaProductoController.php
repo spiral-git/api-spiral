@@ -49,7 +49,7 @@ class CategoriaProductoController extends BaseController
 
         $user = $resp->Data['usuario'];
 
-        $ownerId = $user->ID;
+        $ownerId = $user->Id;
 
         $respuesta = $this->_service->Create($dto, $lang, $ownerId);
 
