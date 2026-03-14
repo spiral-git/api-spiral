@@ -36,7 +36,6 @@ class ProductoRepository implements IProductoRepository
     public function Create(ProductoEntity $productoEntity, string $lang): RespuestaEntity
     {
         try {
-
           
                 $id = DB::table($this->table)->insertGetId([
                     'id_tipo_producto' => $productoEntity->IdTipoProducto,
@@ -46,7 +45,8 @@ class ProductoRepository implements IProductoRepository
                     'descripcion' => $productoEntity->Descripcion,
                     'valoracion_general' => $productoEntity->ValoracionGeneral,
                     'created_at' => $productoEntity->CreateAt,
-                    'status' => $productoEntity->Status
+                    'status' => $productoEntity->Status,
+                    'owner_id' => $productoEntity->IdOwner
                 ]);
 
                 $productoEntity->Id = $id;

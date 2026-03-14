@@ -35,6 +35,19 @@ class ProductoController extends BaseController
         $dto->Descripcion    = $request->input('descripcion') ?? "";
         $lang   = $request->input('lang') ?? "es";
 
+        $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $user = $resp->Data['usuario'];
+
+        $dto->IdOwner = $user->ID;
+
         $respuesta = $this->_service->crearProducto($dto, $lang);
 
         return response()->json(

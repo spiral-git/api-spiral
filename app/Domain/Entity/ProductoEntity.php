@@ -9,6 +9,7 @@ class ProductoEntity
     public int $IdTipoProducto;
     public int $IdTipoPago;
     public int $IdLenguaje;
+    public int $IdOwner;
     public string $Nombre;
     public string $Descripcion;
     public int $ValoracionGeneral;

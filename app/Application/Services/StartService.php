@@ -47,7 +47,7 @@ class StartService
     public function Start(): RespuestaEntity
     {
         $this->StartTiposUsuarios();
-        $this->StartUsuario();
+        $this->StartUsuarioAdministrador("info@spiralcompanypr.com", "SpiralCompany2026*");
         $this->StartLenguaje();
         $this->StartPaises();
         $this->StartTipoPago();
@@ -96,6 +96,7 @@ class StartService
     {
         $this->_usuarioTipoService->Create("Administrador", "es");
         $this->_usuarioTipoService->Create("Cliente", "es");
+        $this->_usuarioTipoService->Create("Socio", "es");
     }
 
     public function StartTipoCupon()
@@ -104,17 +105,18 @@ class StartService
         $this->_tipoCuponService->Create("Fijo", "es");
     }
 
-    public function StartUsuario()
+    public function StartUsuarioAdministrador( string $mail, $password)
     {
-        $respExist = $this->_usuarioService->GetByMail("Admin@Admin.com", "es");
+
+        $respExist = $this->_usuarioService->GetByMail($mail, "es");
         if ($respExist->IsSuccess) {
             return;
         }
         $dto = new UsuarioInputDto();
-        $dto->Correo = "Admin@Admin.com";
-        $dto->Password = "Admin2025*";
-        $dto->Nombres = "ADMIN";
-        $dto->Apellidos = "ADMIN";
+        $dto->Correo = $mail;
+        $dto->Password =  $password;
+        $dto->Nombres = "";
+        $dto->Apellidos = "";
         $dto->Imagen = "";
         $dto->Telefono = "";
         $this->_usuarioService->Crear($dto, "ADMINISTRADOR", "es");

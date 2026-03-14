@@ -31,6 +31,42 @@ abstract class BaseController
         $this->_userTipoService = $userTipoService;
     }
 
+    protected function validarTokenHeaderOR(array $tiposPermitidos, $lang): RespuestaEntity
+    {
+        $headers = getallheaders();
+
+        if (!isset($headers['Authorization'])) {
+            return new RespuestaEntity($this->translations[$lang]['token_not_sent'], false, null);
+        }
+
+        if (!preg_match('/Bearer\s(\S+)/', $headers['Authorization'], $matches)) {
+            return new RespuestaEntity($this->translations[$lang]['invalid_token_format'], false, null);
+        }
+
+        $token = $matches[1];
+
+        $resp = $this->_userService->AuthorizationUser($token, $lang);
+        if (!$resp->IsSuccess) {
+            return $resp;
+        }
+
+        $idTipoUsuario = $resp->Data->IdTipoUsuario;
+
+        foreach ($tiposPermitidos as $tipo) {
+
+            $tipoUserResp = $this->_userTipoService->GetByName(strtoupper($tipo), $lang);
+
+            if ($tipoUserResp->IsSuccess && $idTipoUsuario == $tipoUserResp->Data->Id) {
+
+                return new RespuestaEntity($this->translations[$lang]['authorized'], true, [
+                    "usuario" => $resp->Data,
+                    "token" => $token
+                ]);
+            }
+        }
+
+        return new RespuestaEntity($this->translations[$lang]['no_permission'], false, null);
+    }
 
     protected function validarTokenHeader($tipoUsuario, $lang): RespuestaEntity
     {

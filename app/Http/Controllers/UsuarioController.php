@@ -107,4 +107,37 @@ class UsuarioController extends BaseController
         );
     }
 
+    public function crearSocio(Request $request)
+    {
+
+        $dto = new UsuarioInputDto();
+        $dto->Nombres = $request->input('nombres') ?? "";
+        $dto->Apellidos = $request->input('apellidos') ?? "";
+        $dto->Correo = $request->input('correo') ?? "";
+        $dto->Password = $request->input('password') ?? "";
+        $dto->Telefono = $request->input('telefono') ?? "";
+        $dto->Imagen = $request->input('imagen') ?? "";
+        $lang = $request->input('lang') ?? "es";
+
+        $resp = $this->validarTokenHeader("ADMINISTRADOR", $lang);
+
+        if (!$resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $respuesta = $this->_service->Crear(
+            $dto,
+            "SOCIO",
+            $lang
+        );
+
+        return response()->json(
+            $respuesta,
+            $respuesta->IsSuccess ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST
+        );
+    }
+
 }

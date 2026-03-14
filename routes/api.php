@@ -41,6 +41,8 @@ Route::prefix('usuario')->group(function () {
     Route::post('/loguot', [UsuarioController::class, 'logout']);
     Route::post('/logout-all', [UsuarioController::class, 'logoutAll']);
     Route::post('/create', [UsuarioController::class, 'crearUsuario']);
+    Route::post('/create-socio', [UsuarioController::class, 'crearSocio']);
+
 
 });
 

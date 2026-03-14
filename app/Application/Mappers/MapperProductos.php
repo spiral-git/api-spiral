@@ -20,6 +20,7 @@ class MapperProductos
         $producto->CreateAt = Carbon::now();
         $producto->ValoracionGeneral = 0; 
         $producto->Status = "activo";
+        $producto->IdOwner = $dto->IdOwner;
         return $producto;
     }
 

@@ -13,7 +13,6 @@ class UsuarioValidations
             "validation_error" => "Errores de validación",
 
             "name_required" => "Los nombres son obligatorios",
-            "lastname_required" => "Los apellidos son obligatorios",
 
             "email_required" => "El correo es obligatorio",
             "email_invalid" => "Formato de correo inválido",
@@ -32,7 +31,6 @@ class UsuarioValidations
             "validation_error" => "Validation errors",
 
             "name_required" => "First name is required",
-            "lastname_required" => "Last name is required",
 
             "email_required" => "Email is required",
             "email_invalid" => "Invalid email format",
@@ -52,7 +50,6 @@ class UsuarioValidations
         $errores = [];
 
         self::validarNombres($dto->Nombres, $errores, $lang);
-        self::validarApellidos($dto->Apellidos, $errores, $lang);
         self::validarCorreo($dto->Correo, $errores, $lang);
         self::validarPassword($dto->Password, $errores, $lang);
 
@@ -67,15 +64,6 @@ class UsuarioValidations
     {
         if (empty($valor)) {
             $errores["nombres"] = self::$translations[$lang]['name_required'];
-            return;
-        }
-
-    }
-
-    private static function validarApellidos(?string $valor, array &$errores, string $lang): void
-    {
-        if (empty($valor)) {
-            $errores["apellidos"] = self::$translations[$lang]['lastname_required'];
             return;
         }
 

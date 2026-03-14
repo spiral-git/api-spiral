@@ -47,9 +47,9 @@ class CategoriaDocs
             content: new OA\JsonContent(
                 required: ["name", "idLenguaje", "lang"],
                 properties: [
-                    new OA\Property(property: "name", type: "string", example: "Tecnología"),
-                    new OA\Property(property: "idLenguaje", type: "integer", example: 1),
-                    new OA\Property(property: "lang", type: "string", example: "es")
+                    new OA\Property(property: "name", type: "string", example: ""),
+                    new OA\Property(property: "idLenguaje", type: "integer", example: 0),
+                    new OA\Property(property: "lang", type: "string", example: "")
                 ]
             )
         ),
@@ -75,11 +75,11 @@ class CategoriaDocs
             content: new OA\JsonContent(
                 required: ["id", "name", "idLenguaje", "status", "lang"],
                 properties: [
-                    new OA\Property(property: "id", type: "integer", example: 1),
-                    new OA\Property(property: "name", type: "string", example: "Tecnología"),
-                    new OA\Property(property: "idLenguaje", type: "integer", example: 1),
+                    new OA\Property(property: "id", type: "integer", example: 0),
+                    new OA\Property(property: "name", type: "string", example: ""),
+                    new OA\Property(property: "idLenguaje", type: "integer", example: 0),
                     new OA\Property(property: "status", type: "boolean", example: true),
-                    new OA\Property(property: "lang", type: "string", example: "es")
+                    new OA\Property(property: "lang", type: "string", example: "")
                 ]
             )
         ),
