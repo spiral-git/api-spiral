@@ -6,7 +6,6 @@ use OpenApi\Attributes as OA;
 class CategoriaDocs
 {
     // GETALL------------------------------------------------------------------
-
     #[OA\Get(
         path: "/categoria/{idlenguaje}/{lang}",
         tags: ["Categoria"],
@@ -38,8 +37,6 @@ class CategoriaDocs
 
 
     //CREATED------------------------------------------------------------------
-
-
     #[OA\Post(
         path: "/categoria/create",
         tags: ["Categoria"],
@@ -68,8 +65,6 @@ class CategoriaDocs
     }
 
     //UPDATE------------------------------------------------------------------
-
-
     #[OA\Put(
         path: "/categoria/update",
         tags: ["Categoria"],

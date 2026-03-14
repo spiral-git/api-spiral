@@ -55,7 +55,6 @@ class UsuarioValidations
         self::validarApellidos($dto->Apellidos, $errores, $lang);
         self::validarCorreo($dto->Correo, $errores, $lang);
         self::validarPassword($dto->Password, $errores, $lang);
-        self::validarTelefono($dto->Telefono, $errores, $lang);
 
         return new RespuestaEntity(
             empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
@@ -99,12 +98,12 @@ class UsuarioValidations
     {
         if (empty($valor)) {
             $errores["password"] = self::$translations[$lang]['password_required'];
-            return;
+            
         }
 
         if (strlen($valor) < 8) {
             $errores["password"] = self::$translations[$lang]['password_min'];
-            return;
+            
         }
 
         if (!preg_match('/[A-Z]/', $valor)) {
@@ -120,14 +119,4 @@ class UsuarioValidations
         }
     }
 
-    private static function validarTelefono(?string $valor, array &$errores, string $lang): void
-    {
-        if (empty($valor)) {
-            $errores["telefono"] = self::$translations[$lang]['phone_required'];
-        }
-
-        if (!preg_match('/^[0-9+\-\s]{7,20}$/', $valor)) {
-            $errores["telefono"] = self::$translations[$lang]['phone_invalid'];
-        }
-    }
 }

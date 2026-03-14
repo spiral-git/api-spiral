@@ -84,6 +84,7 @@ class UsuarioService
                 if (!$respToken->IsSuccess) {
                     return new RespuestaEntity($this->translations[$lang]['user_created_login'], true, null);
                 } else {
+                    unset($usuarioResp->Data->Password);
                     return new RespuestaEntity($this->translations[$lang]['user_created'], true, ["usuario" => $resp->Data, "token" => $respToken->Data->Token]);
                 }
             }
