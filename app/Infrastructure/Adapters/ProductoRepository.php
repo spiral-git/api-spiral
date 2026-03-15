@@ -167,7 +167,7 @@ class ProductoRepository implements IProductoRepository
             $producto->Nombre = $row->nombre;
             $producto->Descripcion = $row->descripcion;
             $producto->ValoracionGeneral = $row->valoracion_general;
-            $producto->CreateAt = $row->created_at;
+            $producto->CreateAt = new \DateTime($row->created_at);
             $producto->Status = $row->status;
             $producto->IdOwner = $row->owner_id;
 
