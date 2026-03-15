@@ -17,13 +17,17 @@ class ProductoRepository implements IProductoRepository
         "es" => [
             "product_created" => "Producto creado correctamente",
             "list_retrieved" => "Lista obtenida correctamente",
-            "error" => "Ocurrió un error"
+            "error" => "Ocurrió un error",
+            "product_found" => "Producto encontrado",
+            "product_not_found" => "Producto no encontrado",
         ],
 
         "en" => [
             "product_created" => "Product created successfully",
             "list_retrieved" => "List retrieved successfully",
-            "error" => "An error occurred"
+            "error" => "An error occurred",
+            "product_found" => "Product found",
+            "product_not_found" => "Product not found",
         ]
 
     ];
@@ -36,26 +40,26 @@ class ProductoRepository implements IProductoRepository
     public function Create(ProductoEntity $productoEntity, string $lang): RespuestaEntity
     {
         try {
-          
-                $id = DB::table($this->table)->insertGetId([
-                    'id_tipo_producto' => $productoEntity->IdTipoProducto,
-                    'id_tipo_pago' => $productoEntity->IdTipoPago,
-                    'id_lenguaje' => $productoEntity->IdLenguaje,
-                    'nombre' => $productoEntity->Nombre,
-                    'descripcion' => $productoEntity->Descripcion,
-                    'valoracion_general' => $productoEntity->ValoracionGeneral,
-                    'created_at' => $productoEntity->CreateAt,
-                    'status' => $productoEntity->Status,
-                    'owner_id' => $productoEntity->IdOwner
-                ]);
 
-                $productoEntity->Id = $id;
+            $id = DB::table($this->table)->insertGetId([
+                'id_tipo_producto' => $productoEntity->IdTipoProducto,
+                'id_tipo_pago' => $productoEntity->IdTipoPago,
+                'id_lenguaje' => $productoEntity->IdLenguaje,
+                'nombre' => $productoEntity->Nombre,
+                'descripcion' => $productoEntity->Descripcion,
+                'valoracion_general' => $productoEntity->ValoracionGeneral,
+                'created_at' => $productoEntity->CreateAt,
+                'status' => $productoEntity->Status,
+                'owner_id' => $productoEntity->IdOwner
+            ]);
 
-                return new RespuestaEntity(
-                    $this->translations[$lang]['product_created'] ?? "",
-                    true,
-                    $productoEntity
-                );
+            $productoEntity->Id = $id;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['product_created'] ?? "",
+                true,
+                $productoEntity
+            );
 
         } catch (Exception $e) {
             return new RespuestaEntity(
@@ -141,11 +145,46 @@ class ProductoRepository implements IProductoRepository
 
     public function GetById(int $id, string $lang): RespuestaEntity
     {
-        return new RespuestaEntity(
-            $this->translations[$lang]['error'] ?? "",
-            false,
-            null
-        );
+        try {
+
+            $row = DB::table($this->table)
+                ->where("id", $id)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['product_not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $producto = new ProductoEntity();
+            $producto->Id = $row->id;
+            $producto->IdTipoProducto = $row->id_tipo_producto;
+            $producto->IdTipoPago = $row->id_tipo_pago;
+            $producto->IdLenguaje = $row->id_lenguaje;
+            $producto->Nombre = $row->nombre;
+            $producto->Descripcion = $row->descripcion;
+            $producto->ValoracionGeneral = $row->valoracion_general;
+            $producto->CreateAt = $row->created_at;
+            $producto->Status = $row->status;
+            $producto->IdOwner = $row->owner_id;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['product_found'] ?? "",
+                true,
+                $producto
+            );
+
+        } catch (Exception $e) {
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
     }
 
     public function Update(ProductoEntity $productoEntity, string $lang): RespuestaEntity

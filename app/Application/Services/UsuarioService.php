@@ -82,9 +82,10 @@ class UsuarioService
                 $respToken = $this->_tokenAuthService->New($resp->Data->Id, $lang);
 
                 if (!$respToken->IsSuccess) {
+                    unset($resp->Data->Password);
                     return new RespuestaEntity($this->translations[$lang]['user_created_login'], true, null);
                 } else {
-                    unset($usuarioResp->Data->Password);
+                    unset($resp->Data->Password);
                     return new RespuestaEntity($this->translations[$lang]['user_created'], true, ["usuario" => $resp->Data, "token" => $respToken->Data->Token]);
                 }
             }
