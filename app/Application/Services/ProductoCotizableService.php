@@ -48,7 +48,7 @@ class ProductoCotizableService
     {
         try {
 
-            $validacionesResp = ProductoCotizableValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $ownerId, $this->_tipoProductoService);
+            $validacionesResp = ProductoCotizableValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $ownerId, $this->_tipoProductoService, $this->_skuService);
             $dto->AmountSetup = 0;
             $dto->MaximoRecursos = 0;
 
