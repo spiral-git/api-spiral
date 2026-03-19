@@ -43,7 +43,6 @@ class PaisProductoRepository implements IPaisProductoRepository
     public function Create(PaisProductoEntity $entity, string $lang): RespuestaEntity
     {
         try {
-            return DB::transaction(function () use ($entity, $lang) {
                 $id = DB::table($this->table)->insertGetId([
                     'id_pais' => $entity->IdPais,
                     'sku' => $entity->SkuProducto,
@@ -56,7 +55,6 @@ class PaisProductoRepository implements IPaisProductoRepository
                     true,
                     $entity
                 );
-            });
         } catch (Exception $e) {
             return new RespuestaEntity(
                 $this->translations[$lang]['error'] ?? "",

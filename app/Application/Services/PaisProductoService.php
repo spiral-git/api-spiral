@@ -45,7 +45,6 @@ class PaisProductoService
         DB::beginTransaction();
         try {
 
-            DB::beginTransaction();
             $respValidation = PaisProductoValidation::validar($dto, $lang, $this->_skuService, $this->_paisService, $this->_productoService, $ownerId);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
