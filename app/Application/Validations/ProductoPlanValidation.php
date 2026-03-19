@@ -78,7 +78,7 @@ class ProductoPlanValidation
             return;
         }
 
-        $respTipoProducto = $tipoProductoService->GetByName('Cotizacion', $lang);
+        $respTipoProducto = $tipoProductoService->GetByName('PLAN', $lang);
 
         if (! $respTipoProducto->IsSuccess) {
             $errores['producto'] = $respTipoProducto->Message;

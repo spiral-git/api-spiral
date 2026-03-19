@@ -65,7 +65,7 @@ class ProductoCotizableValidation
             return;
         }
 
-        $respTipoProducto = $tipoProductoService->GetByName("Cotizacion", $lang);
+        $respTipoProducto = $tipoProductoService->GetByName("COTIZACION", $lang);
 
         if(!$respTipoProducto->IsSuccess){
             $errores["producto"] = $respTipoProducto->Message;

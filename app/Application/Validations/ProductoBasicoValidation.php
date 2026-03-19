@@ -68,7 +68,7 @@ class ProductoBasicoValidation
             return;
         }
 
-        $respTipoProducto = $tipoProductoService->GetByName("Cotizacion", $lang);
+        $respTipoProducto = $tipoProductoService->GetByName("BASICO", $lang);
 
         if(!$respTipoProducto->IsSuccess){
             $errores["producto"] = $respTipoProducto->Message;
