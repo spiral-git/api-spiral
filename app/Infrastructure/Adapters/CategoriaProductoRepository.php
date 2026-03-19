@@ -13,29 +13,33 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
     public string $table;
 
     private array $translations = [
-        "es" => [
-            "created" => "Categoría del producto creada correctamente",
-            "updated" => "Categoría del producto actualizada correctamente",
-            "not_found_update" => "No se encontró el registro para actualizar",
-            "deleted" => "Categoría del producto eliminada correctamente",
-            "not_found_delete" => "No se encontró el registro para eliminar",
-            "list_retrieved" => "Categorías del producto obtenidas correctamente",
-            "error" => "Ocurrió un error"
+        'es' => [
+            'created' => 'Categoría del producto creada correctamente',
+            'updated' => 'Categoría del producto actualizada correctamente',
+            'not_found_update' => 'No se encontró el registro para actualizar',
+            'deleted' => 'Categoría del producto eliminada correctamente',
+            'not_found_delete' => 'No se encontró el registro para eliminar',
+            'list_retrieved' => 'Categorías del producto obtenidas correctamente',
+            'error' => 'Ocurrió un error',
+            'not_found' => 'No encontrado',
+            'found' => 'Encontrado',
         ],
-        "en" => [
-            "created" => "Product category created successfully",
-            "updated" => "Product category updated successfully",
-            "not_found_update" => "No record found to update",
-            "deleted" => "Product category deleted successfully",
-            "not_found_delete" => "No record found to delete",
-            "list_retrieved" => "Product categories retrieved successfully",
-            "error" => "An error occurred"
-        ]
+        'en' => [
+            'created' => 'Product category created successfully',
+            'updated' => 'Product category updated successfully',
+            'not_found_update' => 'No record found to update',
+            'deleted' => 'Product category deleted successfully',
+            'not_found_delete' => 'No record found to delete',
+            'list_retrieved' => 'Product categories retrieved successfully',
+            'error' => 'An error occurred',
+            'not_found' => 'Not found',
+            'found' => 'Found',
+        ],
     ];
 
     public function __construct()
     {
-        $this->table = "CATEGORIAS_PRODUCTO";
+        $this->table = 'CATEGORIAS_PRODUCTO';
     }
 
     public function Create(CategoriaProductoEntity $entity, string $lang): RespuestaEntity
@@ -49,13 +53,49 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
             $entity->Id = $id;
 
             return new RespuestaEntity(
-                $this->translations[$lang]['created'] ?? "",
+                $this->translations[$lang]['created'] ?? '',
                 true,
                 $entity
             );
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
+                false,
+                null
+            );
+        }
+    }
+
+    public function ExistCategoriaProducto(int $idCategoria, string $idProducto, string $lang): RespuestaEntity
+    {
+        try {
+            $row = DB::table($this->table)
+                ->where('id_categoria', $idCategoria)
+                ->where('id_producto', $idProducto)
+                ->first();
+
+            if (! $row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['not_found'] ?? '',
+                    false,
+                    null
+                );
+            }
+
+            $entity = new CategoriaProductoEntity;
+            $entity->Id = $row->id;
+            $entity->IdProducto = $row->id_producto;
+            $entity->IdCategoria = $row->id_categoria;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['found'] ?? '',
+                true,
+                $entity
+            );
+
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );
@@ -74,20 +114,20 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
 
             if ($updated === 0) {
                 return new RespuestaEntity(
-                    $this->translations[$lang]['not_found_update'] ?? "",
+                    $this->translations[$lang]['not_found_update'] ?? '',
                     false,
                     null
                 );
             }
 
             return new RespuestaEntity(
-                $this->translations[$lang]['updated'] ?? "",
+                $this->translations[$lang]['updated'] ?? '',
                 true,
                 $entity
             );
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );
@@ -102,21 +142,22 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
                 ->get();
 
             $entities = $rows->map(function ($row) {
-                $entity = new CategoriaProductoEntity();
+                $entity = new CategoriaProductoEntity;
                 $entity->Id = $row->id;
                 $entity->IdProducto = $row->id_producto;
                 $entity->IdCategoria = $row->id_categoria;
+
                 return $entity;
             });
 
             return new RespuestaEntity(
-                $this->translations[$lang]['list_retrieved'] ?? "",
+                $this->translations[$lang]['list_retrieved'] ?? '',
                 true,
                 $entities
             );
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );
@@ -132,20 +173,20 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
 
             if ($deleted === 0) {
                 return new RespuestaEntity(
-                    $this->translations[$lang]['not_found_delete'] ?? "",
+                    $this->translations[$lang]['not_found_delete'] ?? '',
                     false,
                     null
                 );
             }
 
             return new RespuestaEntity(
-                $this->translations[$lang]['deleted'] ?? "",
+                $this->translations[$lang]['deleted'] ?? '',
                 true,
                 null
             );
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );

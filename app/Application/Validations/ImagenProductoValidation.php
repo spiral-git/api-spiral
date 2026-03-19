@@ -31,7 +31,7 @@ class ImagenProductoValidation
         $errores = [];
 
         self::validarIdProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId);
-        self::validarImagenes($dto->Imagenes, $errores, $lang);
+        self::validarImagen($dto->Imagen, $errores, $lang);
 
         return new RespuestaEntity(
             empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
@@ -61,10 +61,10 @@ class ImagenProductoValidation
 
     }
 
-    private static function validarImagenes(?array $valor, array &$errores, $lang): void
+    private static function validarImagen(?string $valor, array &$errores, $lang): void
     {
         if (empty($valor)) {
-            $errores["imagenes"] = self::$translations[$lang]['image_required'];;
+            $errores["imagen"] = self::$translations[$lang]['image_required'];;
         }
     }
 }

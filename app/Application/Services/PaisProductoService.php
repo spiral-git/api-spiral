@@ -42,31 +42,25 @@ class PaisProductoService
 
     public function Create(PaisProductoInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
-        DB::beginTransaction();
         try {
 
-            $respValidation = PaisProductoValidation::validar($dto, $lang, $this->_skuService, $this->_paisService, $this->_productoService, $ownerId);
+            $respValidation = PaisProductoValidation::validar($dto, $lang, $this->_skuService, $this->_paisService, $this->_productoService, $ownerId, $this->_repository);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }
 
-            foreach ($dto->Paises as $pais) {
                 $entity = new PaisProductoEntity();
-                $entity->IdPais = $pais;
+                $entity->IdPais = $dto->IdPais;
                 $entity->SkuProducto = $dto->SkuProducto;
 
                 $resp = $this->_repository->Create($entity, $lang);
                 if (!$resp->IsSuccess) {
-                    DB::rollBack();
                     return new RespuestaEntity(
                         $this->translations[$lang]['error_created'] ?? "",
                         false,
                         null
                     );
                 }
-            }
-
-            DB::commit();
 
             return new RespuestaEntity(
                 $this->translations[$lang]['success_created'] ?? "",
@@ -76,7 +70,6 @@ class PaisProductoService
 
 
         } catch (Exception $e) {
-            DB::rollBack();
             return new RespuestaEntity(
                 $this->translations[$lang]['error'] ?? "",
                 false,

@@ -41,12 +41,12 @@ class ProductoDocs
     #[OA\Post(
         path: "/producto/create-imagen",
         tags: ["Producto"],
-        summary: "Añadir imagenes al producto",
+        summary: "Añadir imagen al producto",
         security: [["bearerAuth" => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "imagenes", "lang"],
+                required: ["idProducto", "imagen", "lang"],
                 properties: [
                     new OA\Property(
                         property: "idProducto",
@@ -54,13 +54,9 @@ class ProductoDocs
                         example: 0
                     ),
                     new OA\Property(
-                        property: "imagenes",
-                        type: "array",
-                        items: new OA\Items(type: "string"),
-                        example: [
-                            "https://misitio.com/img1.jpg",
-                            "https://misitio.com/img2.jpg"
-                        ]
+                        property: "imagen",
+                        type: "string",
+                        example: ""
                     ),
                     new OA\Property(
                         property: "lang",
@@ -73,7 +69,7 @@ class ProductoDocs
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Imagenes del producto asociadas correctamente"
+                description: "Imagen del producto asociada correctamente"
             )
         ]
     )]
@@ -85,12 +81,12 @@ class ProductoDocs
     #[OA\Post(
         path: "/producto/create-pais",
         tags: ["Producto"],
-        summary: "Añadir paises en los que esta disponible el producto",
+        summary: "Añadir pais en que esta disponible el producto",
         security: [["bearerAuth" => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["sku", "paises", "lang"],
+                required: ["sku", "idPais", "lang"],
                 properties: [
                     new OA\Property(
                         property: "sku",
@@ -98,13 +94,9 @@ class ProductoDocs
                         example: ""
                     ),
                     new OA\Property(
-                        property: "paises",
-                        type: "array", 
-                        items: new OA\Items(type: "integer"),
-                        example: [
-                            0,
-                            0
-                        ]
+                        property: "idPais",
+                        type: "integer", 
+                        example: 0
                     ),
                     new OA\Property(
                         property: "lang",
@@ -117,7 +109,7 @@ class ProductoDocs
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Paises asociados al producto correctamente"
+                description: "Pais asociado al producto correctamente"
             )
         ]
     )]
@@ -129,12 +121,12 @@ class ProductoDocs
     #[OA\Post(
         path: "/producto/create-categoria",
         tags: ["Producto"],
-        summary: "Añadir categorias asociadas al producto",
+        summary: "Añadir categoria asociada al producto",
         security: [["bearerAuth" => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "categorias", "lang"],
+                required: ["idProducto", "idCategoria", "lang"],
                 properties: [
                     new OA\Property(
                         property: "idProducto",
@@ -142,13 +134,9 @@ class ProductoDocs
                         example: 0
                     ),
                     new OA\Property(
-                        property: "categorias",
-                        type: "array",
-                        items: new OA\Items(type: "integer"),
-                        example: [
-                            0,
-                            0
-                        ]
+                        property: "idCategoria",
+                        type: "integer",
+                        example: 0
                     ),
                     new OA\Property(
                         property: "lang",
@@ -161,7 +149,7 @@ class ProductoDocs
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Categorias asociadas al producto correctamente"
+                description: "Categoria asociada al producto correctamente"
             )
         ]
     )]

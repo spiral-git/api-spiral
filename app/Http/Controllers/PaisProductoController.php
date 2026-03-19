@@ -28,12 +28,11 @@ class PaisProductoController extends BaseController
     {
 
         $lang = $request->input('lang') ?? "es";
-        $paises = array_map('intval', Arr::wrap($request->input('paises')));
-        $paises = array_filter($paises, fn($c) => $c > 0);
+        $idPais = $request->input('idPais') ?? 0;
         $sku = $request->input('sku') ?? '';
 
         $dto = new PaisProductoInputDto();
-        $dto->Paises = $paises;
+        $dto->IdPais = $idPais;
         $dto->SkuProducto = $sku;
 
         $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);

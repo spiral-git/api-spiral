@@ -9,7 +9,6 @@ use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\ICategoriaProductoRepository;
 use App\Infrastructure\Adapters\CategoriaProductoRepository;
 use Exception;
-use Illuminate\Support\Facades\DB;
 
 class ProductoCategoriaService
 {
@@ -38,31 +37,27 @@ class ProductoCategoriaService
 
     public function Create(CategoriaProductoDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
-        DB::beginTransaction();
         try {
 
-            $respValidation = CategoriaProductoValidation::validar($dto, $this->_productoService, $this->_categoriaService, $lang, $ownerId);
+            $respValidation = CategoriaProductoValidation::validar($dto, $this->_productoService, $this->_categoriaService, $lang, $ownerId, $this->_repository);
             if (!$respValidation->IsSuccess) {
                 return $respValidation;
             }
             
-            foreach ($dto->Categorias as $categoria) {
                 $entity = new CategoriaProductoEntity();
                 $entity->IdProducto = $dto->IdProducto;
-                $entity->IdCategoria = $categoria;
+                $entity->IdCategoria = $dto->IdCategoria;
 
                 $resp = $this->_repository->Create($entity, $lang);
                 if (!$resp->IsSuccess) {
-                    DB::rollBack();
                     return new RespuestaEntity(
                         $this->translations[$lang]['error_created'] ?? "",
                         false,
                         null
                     );
                 }
-            }
+            
 
-            DB::commit();
 
             return new RespuestaEntity(
                 $this->translations[$lang]['success_created'] ?? "",
@@ -72,7 +67,6 @@ class ProductoCategoriaService
 
 
         } catch (Exception $e) {
-            DB::rollBack();
             return new RespuestaEntity(
                 $this->translations[$lang]['error'] ?? "",
                 false,

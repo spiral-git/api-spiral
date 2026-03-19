@@ -31,11 +31,10 @@ class CategoriaProductoController extends BaseController
 
         $lang = $request->input('lang') ?? "es";
         $idProducto = $request->input('idProducto') ?? 0;
-        $categorias = array_map('intval', Arr::wrap($request->input('categorias')));
-        $categorias = array_filter($categorias, fn($c) => $c > 0);
+        $idCategoria = $request->input('idCategoria') ?? 0;
 
         $dto = new CategoriaProductoDto();
-        $dto->Categorias = $categorias;
+        $dto->IdCategoria = $idCategoria;
         $dto->IdProducto = $idProducto;
 
         $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);

@@ -6,33 +6,36 @@ use App\Application\DTOs\CategoriaProducto\CategoriaProductoDto;
 use App\Application\Services\CategoriaService;
 use App\Application\Services\ProductoService;
 use App\Domain\Entity\RespuestaEntity;
+use App\Infrastructure\Adapters\CategoriaProductoRepository;
 
 class CategoriaProductoValidation
 {
 
     private static array $translations = [
-        "es" => [
-            "validation_success" => "Validación correcta",
-            "validation_error" => "Errores de validación",
-            "product_id_required" => "El id del producto es obligatorio",
-            "category_required" => "Debe enviar al menos una categoría del producto",
-            "owner_invalid" => "El owner no es dueño del producto",
-        ],
-        "en" => [
-            "validation_success" => "Validation successful",
-            "validation_error" => "Validation errors",
-            "product_id_required" => "Product id is required",
-            "category_required" => "You must send at least one product category",
-            "owner_invalid" => "The owner does not own the product",
-        ]
-    ];
+    "es" => [
+        "validation_success" => "Validación correcta",
+        "validation_error" => "Errores de validación",
+        "product_id_required" => "El id del producto es obligatorio",
+        "category_required" => "El id de la categoria es requerido",
+        "owner_invalid" => "El owner no es dueño del producto",
+        "categoria_duplicado" => "Ya la categoria esta asociada al producto"
+    ],
+    "en" => [
+        "validation_success" => "Validation successful",
+        "validation_error" => "Validation errors",
+        "product_id_required" => "Product id is required",
+        "category_required" => "Category id is required",
+        "owner_invalid" => "The owner does not own the product",
+        "categoria_duplicado" => "The category is already associated with the product"
+    ]
+];
 
-    public static function validar(CategoriaProductoDto $dto, ProductoService $productoService, CategoriaService $categoriaService, string $lang, int $ownerId): RespuestaEntity
+    public static function validar(CategoriaProductoDto $dto, ProductoService $productoService, CategoriaService $categoriaService, string $lang, int $ownerId, CategoriaProductoRepository $repository): RespuestaEntity
     {
         $errores = [];
 
         self::validarIdProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId);
-        self::validarCategorias($dto->Categorias, $errores, $categoriaService, $lang);
+        self::validarCategoria($dto->IdCategoria, $errores, $categoriaService, $lang, $repository, $dto->IdProducto);
 
         return new RespuestaEntity(
             empty($errores) ? self::$translations[$lang]['validation_success'] : self::$translations[$lang]['validation_error'],
@@ -61,21 +64,26 @@ class CategoriaProductoValidation
         }
     }
 
-    private static function validarCategorias(?array $valor, array &$errores, CategoriaService $categoriaService, string $lang): void
+    private static function validarCategoria(?int $valor, array &$errores, CategoriaService $categoriaService, string $lang, CategoriaProductoRepository $repository, int $idProducto): void
     {
-        if (empty($valor)) {
-            $errores["categorias"] = self::$translations[$lang]['category_required'];
+        if (empty($valor) || $valor <= 0) {
+            $errores["categoria"] = self::$translations[$lang]['category_required'];
             return;
 
         }
 
-        foreach ($valor as $idCat) {
-
-            $resp = $categoriaService->GetById($idCat, $lang);
+         $resp = $categoriaService->GetById($valor, $lang); 
 
             if (!$resp->IsSuccess) {
-                $errores["categorias_$idCat"] = $resp->Message;
+                $errores["categoria"] = $resp->Message;
             }
+
+        $existCategoriaProducto = $repository->ExistCategoriaProducto($valor, $idProducto, $lang);
+
+        if ($existCategoriaProducto->IsSuccess) {
+            $errores['categoria'] = self::$translations[$lang]['categoria_duplicado'];
+
+            return;
         }
 
     }

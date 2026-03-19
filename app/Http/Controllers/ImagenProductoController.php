@@ -29,12 +29,9 @@ class ImagenProductoController extends BaseController
 
         $lang = $request->input('lang') ?? "es";
         $idProducto = $request->input('idProducto') ?? 0;
-
-        $imagenes = Arr::wrap($request->input('imagenes'));
-        $imagenes = array_filter($imagenes, fn($i) => is_string($i) && trim($i) !== '');
-
+        $imagen = $request->input('imagen') ?? "";
         $dto = new ImagenProductoInputDto();
-        $dto->Imagenes = $imagenes;
+        $dto->Imagen = $imagen;
         $dto->IdProducto = $idProducto;
 
         $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);

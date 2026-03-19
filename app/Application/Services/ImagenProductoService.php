@@ -34,7 +34,6 @@ class ImagenProductoService
 
     public function Create(ImagenProductoInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
-        DB::beginTransaction();
         try {
 
             $respValidation = ImagenProductoValidation::validar($dto, $this->_productoService, $lang, $ownerId);
@@ -42,24 +41,21 @@ class ImagenProductoService
                 return $respValidation;
             }
 
-            foreach ($dto->Imagenes as $imagen) {
                 $entity = new ImagenProductoEntity();
                 $entity->IdProducto = $dto->IdProducto;
-                $entity->Ruta = $imagen;
+                $entity->Ruta = $dto->Imagen;
                 $entity->Status = true;
 
                 $resp = $this->_repository->Create($entity, $lang);
                 if (!$resp->IsSuccess) {
-                    DB::rollBack();
                     return new RespuestaEntity(
                         $this->translations[$lang]['error_created'] ?? "",
                         false,
                         null
                     );
                 }
-            }
+            
 
-            DB::commit();
 
             return new RespuestaEntity(
                 $this->translations[$lang]['success_created'] ?? "",
