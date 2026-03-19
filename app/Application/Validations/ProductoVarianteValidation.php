@@ -2,16 +2,16 @@
 
 namespace App\Application\Validations;
 
-use App\Application\DTOs\Producto\ProductoBasicoInputDto;
+use App\Application\DTOs\Producto\ProductoVarianteInputDto;
 use App\Application\Services\ProductoService;
 use App\Application\Services\TipoDescuentoService;
 use App\Application\Services\TipoProductoService;
 use App\Application\Services\TipoSetupService;
 use App\Domain\Entity\RespuestaEntity;
 
-class ProductoBasicoValidation
+class ProductoVarianteValidation
 {
-    private static array $translations = [
+     private static array $translations = [
     "es" => [
         "validation_success" => "Validación correcta",
         "validation_error" => "Errores de validación",
@@ -20,6 +20,7 @@ class ProductoBasicoValidation
         "validation_id_tipodescuento" => "El Id del tipo de descuento es obligatorio",
         "owner_invalid" => "El owner no es dueño del producto",
         "type_product_invalid" => "El tipo de producto no es valido",
+        "validation_name" => "El nombre de la variante es requerido"
     ],
     "en" => [
         "validation_success" => "Validation successful",
@@ -29,15 +30,17 @@ class ProductoBasicoValidation
         "validation_id_tipodescuento" => "Discount type id is required",
          "owner_invalid" => "The owner does not own the product",
          "type_product_invalid" => "Type product is invalid",
+         "validation_name" => "Name variant is required"
     ]
 ];
 
-    public static function validar(ProductoBasicoInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService, int $ownerId, TipoProductoService $tipoProductoService): RespuestaEntity 
+    public static function validar(ProductoVarianteInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService, int $ownerId, TipoProductoService $tipoProductoService): RespuestaEntity 
     {
         $errores = [];
 
         self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId, $tipoProductoService);
         self::validarTipoSetup($dto->IdTipoSetup, $errores, $tipoSetupService, $lang);
+        self::validarNombreVariante($dto->Nombre, $errores,  $lang);
         self::validarTipoDescuento($dto->IdTipoDescuento, $errores, $tipoDescuentoService, $lang);
 
 
@@ -92,6 +95,16 @@ class ProductoBasicoValidation
         $resp = $tipoSetupService->GetById($valor, $lang);
         if (!$resp->IsSuccess) {
             $errores["tipoSetup"] = $resp->Message;
+        }
+
+    }
+
+    private static function validarNombreVariante(?string $valor, array &$errores, string $lang): void
+    {
+        if (empty($valor)) {
+            $errores["nombreVariante"] = self::$translations[$lang]['validation_name'];
+            return;
+
         }
 
     }

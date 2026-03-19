@@ -11,4 +11,5 @@ interface IProductoVarianteRepository
     public function Update(ProductoVarianteEntity $entity, string $lang): RespuestaEntity;
     public function GetBySku(string $sku, string $lang): RespuestaEntity;
 
+
 }

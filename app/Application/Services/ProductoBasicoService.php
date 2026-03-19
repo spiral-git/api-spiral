@@ -3,6 +3,7 @@
 namespace App\Application\Services;
 
 use App\Application\DTOs\Producto\ProductoBasicoInputDto;
+use App\Application\DTOs\Producto\ProductoBasicoOutputDto;
 use App\Application\DTOs\Setup\SetupInputDto;
 use App\Application\DTOs\Sku\SkuInputDto;
 use App\Application\Validations\ProductoBasicoValidation;
@@ -21,6 +22,7 @@ class ProductoBasicoService
     protected TipoSetupService $_tipoSetupService;
     protected TipoDescuentoService $_tipoDescuentoService;
     protected IProductoBasicoRepository $_repository;
+     protected TipoProductoService $_tipoProductoService;
 
     private array $translations = [
         "es" => [
@@ -35,7 +37,7 @@ class ProductoBasicoService
         ]
     ];
 
-    public function __construct(IProductoBasicoRepository $repository, SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService)
+    public function __construct(IProductoBasicoRepository $repository, TipoProductoService $tipoProductoService, SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService)
     {
         $this->_skuService = $skuService;
         $this->_productoSetupService = $productoSetupService;
@@ -43,6 +45,8 @@ class ProductoBasicoService
         $this->_tipoSetupService = $tipoSetupService;
         $this->_tipoDescuentoService = $tipoDescuentoService;
         $this->_repository = $repository;
+        $this->_tipoProductoService = $tipoProductoService;
+
     }
 
 
@@ -50,7 +54,7 @@ class ProductoBasicoService
     {
         try {
 
-            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId);
+            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId, $this->_tipoProductoService);
 
             if (!$validacionesResp->IsSuccess) {
                 return $validacionesResp;
@@ -93,7 +97,7 @@ class ProductoBasicoService
             $productoBasicoEntity->IdTipoDescuento = $dto->IdTipoDescuento;
 
             $productoBasicoResp = $this->_repository->Create($productoBasicoEntity, $lang);
-            if (!$skuResp->IsSuccess) {
+            if (!$productoBasicoResp->IsSuccess) {
                 DB::rollBack();
                 return new RespuestaEntity(
                     $this->translations[$lang]['error_created'] ?? "",
@@ -102,12 +106,17 @@ class ProductoBasicoService
                 );
             }
 
+            $output = new ProductoBasicoOutputDto();
+            $output->Sku = $skuResp->Data;
+            $output->Setup = $setupResp->Data;
+            $output->ProductoBasico = $productoBasicoResp->Data;
+
             DB::commit();
 
             return new RespuestaEntity(
-                $this->translations[$lang]['success_created'] ?? "",
+                $this->translations[$lang]['success_created'] ?? '',
                 true,
-                null
+                $output
             );
 
         } catch (Exception $e) {

@@ -4,16 +4,15 @@ namespace App\Application\DTOs\Producto;
 
 class ProductoVarianteInputDto
 {
-    public int $IdTipoProducto;
-    public int $IdTipoPago;
-    public int $IdLenguaje;
-    public string $Nombre;
-    public string $Descripcion;
+    public int $IdProducto;
     public int $MaximoRecursos;
-    public $Categorias = [];
-    public $Paises = [];
-    public $Imagenes = [];
-    public $Variantes = [];
+    public int $IdTipoSetup;
+    public int $AmountSetup;
+    public int $Precio;
+    public int $Descuento;
+    public int $IdTipoDescuento;
+    public string $Nombre;
+
 
     public function __construct() {}
 }

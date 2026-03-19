@@ -10,7 +10,9 @@ use App\Application\Services\PaisService;
 use App\Application\Services\ProductoBasicoService;
 use App\Application\Services\ProductoCategoriaService;
 use App\Application\Services\ProductoCotizableService;
+use App\Application\Services\ProductoPlanService;
 use App\Application\Services\ProductoService;
+use App\Application\Services\ProductoVarianteService;
 use App\Application\Services\SkuService;
 use App\Application\Services\StartService;
 use App\Application\Services\TipoCuponService;
@@ -208,16 +210,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            IProductoVarianteRepository::class,
-            ProductoVarianteRepository::class
-        );
-
-        $this->app->singleton(
-            IProductoPlanRepository::class,
-            ProductoPlanRepository::class
-        );
-
-        $this->app->singleton(
             IDetallePlanRepository::class,
             DetallePlanRepository::class
         );
@@ -258,8 +250,25 @@ class AppServiceProvider extends ServiceProvider
             ProductoBasicoService::class
         );
 
+        $this->app->singleton(
+            IProductoVarianteRepository::class,
+            ProductoVarianteRepository::class
+        );
 
+        $this->app->singleton(
+            ProductoVarianteService::class,
+            ProductoVarianteService::class
+        );
 
+        $this->app->singleton(
+            IProductoPlanRepository::class,
+            ProductoPlanRepository::class
+        );
+
+        $this->app->singleton(
+            ProductoPlanService::class,
+            ProductoPlanService::class
+        );
 
         //va al final de todo
         $this->app->singleton(

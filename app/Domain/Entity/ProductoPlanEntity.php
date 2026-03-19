@@ -11,9 +11,7 @@ class ProductoPlanEntity
     public string $Etiqueta;
     public int $Precio;
     public int $Descuento;
-
-    // public SkuProductoEntity $SkuProductoEntity;
-    // public array $ListDetalles = [];
+    public int $IdTipoDescuento;
 
     public function __construct(){}
 

@@ -4,16 +4,17 @@ namespace App\Application\DTOs\Producto;
 
 class ProductoPlanInputDto
 {
-    public int $IdTipoProducto;
-    public int $IdTipoPago;
-    public int $IdLenguaje;
+    public int $IdProducto;
+    public int $MaximoRecursos;
+    public int $IdTipoSetup;
+    public int $AmountSetup;
+    public int $Precio;
+    public int $Descuento;
+    public int $IdTipoDescuento;
     public string $Nombre;
     public string $Descripcion;
-    public int $MaximoRecursos;
-    public $Categorias = [];
-    public $Paises = [];
-    public $Imagenes = [];
-    public $Planes = [];
+    public string $Etiqueta;
+
 
     public function __construct() {}
 }

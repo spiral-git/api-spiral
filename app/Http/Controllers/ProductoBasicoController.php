@@ -34,7 +34,7 @@ class ProductoBasicoController extends BaseController
         $dto->AmountSetup         = $request->input('amountSetup') ?? 0;
         $dto->Precio         = $request->input('precio') ?? 0;
         $dto->IdTipoDescuento         = $request->input('idTipoDescuento') ?? 0;
-        $dto->Descuento         = $request->input('Descuento') ?? 0;
+        $dto->Descuento         = $request->input('descuento') ?? 0;
 
         $lang   = $request->input('lang') ?? "es";
 

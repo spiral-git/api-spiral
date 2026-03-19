@@ -4,6 +4,7 @@ namespace App\Application\Validations;
 
 use App\Application\DTOs\Producto\ProductoCotizableDto;
 use App\Application\Services\ProductoService;
+use App\Application\Services\TipoProductoService;
 use App\Application\Services\TipoSetupService;
 use App\Domain\Entity\RespuestaEntity;
 
@@ -17,6 +18,8 @@ class ProductoCotizableValidation
             "validation_idproducto" => "El id del producto es obligatorio",
             "validation_id_tiposetup" => "El Id del setup es obligatorio",
             "owner_invalid" => "El owner no es dueño del producto",
+            "type_product_invalid" => "El tipo de producto no es valido",
+
         ],
         "en" => [
             "validation_success" => "Validation successful",
@@ -24,14 +27,15 @@ class ProductoCotizableValidation
             "validation_idproducto" => "Product id is required",
             "validation_id_tiposetup" => "Setup id is required",
              "owner_invalid" => "The owner does not own the product",
+             "type_product_invalid" => "Type product is invalid",
         ]
     ];
 
-    public static function validar(ProductoCotizableDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, int $ownerId): RespuestaEntity
+    public static function validar(ProductoCotizableDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, int $ownerId, TipoProductoService $tipoProductoService): RespuestaEntity
     {
         $errores = [];
 
-        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId);
+        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId, $tipoProductoService);
         self::validarTipoSetup($dto->IdTipoSetup, $errores, $tipoSetupService, $lang);
 
 
@@ -43,21 +47,33 @@ class ProductoCotizableValidation
     }
 
 
-    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId): void
+    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId, TipoProductoService $tipoProductoService): void
     {
         if (empty($valor) || $valor <= 0) {
             $errores["idProducto"] = self::$translations[$lang]['validation_idproducto'];
-            return;
-
+            return; 
         }
 
         $resp = $productoService->GetById($valor, $lang);
         if (!$resp->IsSuccess) {
             $errores["producto"] = $resp->Message;
+            return;
         }
 
         if($resp->Data->IdOwner != $ownerId){
             $errores["producto"] = self::$translations[$lang]['owner_invalid'];
+            return;
+        }
+
+        $respTipoProducto = $tipoProductoService->GetByName("Cotizacion", $lang);
+
+        if(!$respTipoProducto->IsSuccess){
+            $errores["producto"] = $respTipoProducto->Message;
+            return;
+        }
+
+        if($respTipoProducto->Data->Id != $resp->Data->IdTipoProducto){
+            $errores["producto"] = self::$translations[$lang]['type_product_invalid'];
             return;
         }
     }

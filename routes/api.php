@@ -9,6 +9,7 @@ use App\Http\Controllers\PaisProductoController;
 use App\Http\Controllers\ProductoBasicoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoCotizacionController;
+use App\Http\Controllers\ProductoVarianteController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\TipoCuponController;
 use App\Http\Controllers\TipoDescuentoController;
@@ -18,22 +19,22 @@ use App\Http\Controllers\TipoSetupController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TipoUsuarioController;
 use App\Http\Controllers\UsuarioController;
-
+use App\Http\ProductoPlanController;
 
 Route::prefix('start')->group(function () {
     Route::get('/', [StartController::class, 'Start']);
 });
 
-Route::get('/swagger-setup', function() {
+// Route::get('/swagger-setup', function() {
 
-    $output = [];
-    $output[] = \Illuminate\Support\Facades\Artisan::call('config:clear');
-    $output[] = \Illuminate\Support\Facades\Artisan::call('route:clear');
-    $output[] = \Illuminate\Support\Facades\Artisan::call('package:discover');
-    $output[] = \Illuminate\Support\Facades\Artisan::call('l5-swagger:generate');
-    return response()->json(['done' => true, 'output' => $output]);
+//     $output = [];
+//     $output[] = \Illuminate\Support\Facades\Artisan::call('config:clear');
+//     $output[] = \Illuminate\Support\Facades\Artisan::call('route:clear');
+//     $output[] = \Illuminate\Support\Facades\Artisan::call('package:discover');
+//     $output[] = \Illuminate\Support\Facades\Artisan::call('l5-swagger:generate');
+//     return response()->json(['done' => true, 'output' => $output]);
 
-});
+// });
 
 Route::prefix('usuario')->group(function () {
 
@@ -75,6 +76,9 @@ Route::prefix('producto')->group(function () {
     Route::post('/create-categoria', [CategoriaProductoController::class, 'Create']);
     Route::post('/create-cotizacion', [ProductoCotizacionController::class, 'Create']);
     Route::post('/create-basico', [ProductoBasicoController::class, 'Create']);
+    Route::post('/create-variante', [ProductoVarianteController::class, 'Create']);
+    Route::post('/create-plan', [ProductoPlanController::class, 'Create']);
+
 
 });
 

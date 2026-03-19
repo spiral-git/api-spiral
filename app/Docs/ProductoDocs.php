@@ -286,4 +286,162 @@ class ProductoDocs
     {
     }
 
+
+    
+
+    //CREATED PRODUCTO VARIANTE------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-variante",
+        tags: ["Producto"],
+        summary: "Crear producto variante",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang", "nombre"],
+                properties: [
+                    new OA\Property(
+                        property: "idProducto",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "maximoRecursos",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "amountSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "precio",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoDescuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "Descuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    ),
+
+                    new OA\Property(
+                        property: "nombre",
+                        type: "string",
+                        example: ""
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Producto variante creado correctamente"
+            )
+        ]
+    )]
+    public function created_producto_variante()
+    {
+    }
+
+
+     //CREATED PRODUCTO PLAN------------------------------------------------------------------
+    #[OA\Post(
+        path: "/producto/create-plan",
+        tags: ["Producto"],
+        summary: "Crear producto plan",
+        security: [["bearerAuth" => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang", "nombre", "descripcion", "etiqueta"],
+                properties: [
+                    new OA\Property(
+                        property: "idProducto",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "maximoRecursos",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "amountSetup",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "precio",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "idTipoDescuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "Descuento",
+                        type: "integer",
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: "lang",
+                        type: "string",
+                        example: "es"
+                    ),
+
+                    new OA\Property(
+                        property: "nombre",
+                        type: "string",
+                        example: ""
+                    ),
+
+                    new OA\Property(
+                        property: "descripcion",
+                        type: "string",
+                        example: ""
+                    ),
+
+                    new OA\Property(
+                        property: "etiqueta",
+                        type: "string",
+                        example: ""
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Producto plan creado correctamente"
+            )
+        ]
+    )]
+    public function created_producto_plan()
+    {
+    }
+
 }

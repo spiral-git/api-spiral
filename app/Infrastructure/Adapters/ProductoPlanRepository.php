@@ -49,7 +49,8 @@ class ProductoPlanRepository implements IProductoPlanRepository
                 'descuento' => $entity->Descuento,
                 'nombre' => $entity->Nombre,
                 'descripcion' => $entity->Descripcion,
-                'etiqueta' => $entity->Etiqueta
+                'etiqueta' => $entity->Etiqueta,
+                'id_tipo_descuento' => $entity->IdTipoDescuento
             ]);
 
             $entity->Id = $id;
@@ -82,7 +83,9 @@ class ProductoPlanRepository implements IProductoPlanRepository
                     'descuento' => $entity->Descuento,
                     'nombre' => $entity->Nombre,
                     'descripcion' => $entity->Descripcion,
-                    'etiqueta' => $entity->Etiqueta
+                    'etiqueta' => $entity->Etiqueta,
+                    'id_tipo_descuento' => $entity->IdTipoDescuento
+
                 ]);
 
             if ($updated === 0) {
@@ -133,6 +136,8 @@ class ProductoPlanRepository implements IProductoPlanRepository
             $entity->Nombre = $row->nombre;
             $entity->Descripcion = $row->descripcion;
             $entity->Etiqueta = $row->etiqueta;
+            $entity->IdTipoDescuento = $row->id_tipo_descuento;
+
 
             return new RespuestaEntity(
                 $this->translations[$lang]['plan_found'] ?? "",

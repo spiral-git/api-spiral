@@ -2,55 +2,63 @@
 
 namespace App\Application\Services;
 
-use App\Application\DTOs\Producto\ProductoCotizableDto;
-use App\Application\DTOs\Producto\ProductoCotizableOutputDto;
+use App\Application\DTOs\Producto\ProductoVarianteInputDto;
+use App\Application\DTOs\Producto\ProductoVarianteOutputDto;
 use App\Application\DTOs\Setup\SetupInputDto;
 use App\Application\DTOs\Sku\SkuInputDto;
-use App\Application\Validations\ProductoCotizableValidation;
+use App\Application\Validations\ProductoVarianteValidation;
+use App\Domain\Entity\ProductoVarianteEntity;
 use App\Domain\Entity\RespuestaEntity;
+use App\Domain\Ports\IProductoVarianteRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class ProductoCotizableService
+class ProductoVarianteService
 {
     protected SkuService $_skuService;
 
     protected ProductoSetupService $_productoSetupService;
 
     protected ProductoService $_productoService;
-    protected TipoProductoService $_tipoProductoService;
 
     protected TipoSetupService $_tipoSetupService;
+
+    protected TipoDescuentoService $_tipoDescuentoService;
+
+    protected IProductoVarianteRepository $_repository;
+
+    protected TipoProductoService $_tipoProductoService;
 
     private array $translations = [
         'es' => [
             'error' => 'Ocurrió un error',
-            'success_created' => 'Producto de cotización creado exitosamente',
-            'error_created' => 'Error al crear el producto de cotización',
+            'success_created' => 'Producto variante creado exitosamente',
+            'error_created' => 'Error al crear el producto variante',
         ],
         'en' => [
             'error' => 'An error occurred',
-            'success_created' => 'Quotation product created successfully',
-            'error_created' => 'Error creating the quotation product',
+            'success_created' => 'Variant product created successfully',
+            'error_created' => 'Error creating variant product',
         ],
     ];
 
-    public function __construct(SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoProductoService $tipoProductoService)
+    public function __construct(IProductoVarianteRepository $repository, TipoProductoService $tipoProductoService, SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService)
     {
         $this->_skuService = $skuService;
         $this->_productoSetupService = $productoSetupService;
         $this->_productoService = $productoService;
         $this->_tipoSetupService = $tipoSetupService;
+        $this->_tipoDescuentoService = $tipoDescuentoService;
+        $this->_repository = $repository;
         $this->_tipoProductoService = $tipoProductoService;
+
     }
 
-    public function Created(ProductoCotizableDto $dto, string $lang, int $ownerId): RespuestaEntity
+    public function Created(ProductoVarianteInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         try {
 
-            $validacionesResp = ProductoCotizableValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $ownerId, $this->_tipoProductoService);
-            $dto->AmountSetup = 0;
-            $dto->MaximoRecursos = 0;
+            $validacionesResp = ProductoVarianteValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId, $this->_tipoProductoService);
 
             if (! $validacionesResp->IsSuccess) {
                 return $validacionesResp;
@@ -88,9 +96,28 @@ class ProductoCotizableService
                 );
             }
 
-            $output = new ProductoCotizableOutputDto();
+            $productoEntity = new ProductoVarianteEntity;
+            $productoEntity->SkuProducto = $skuResp->Data->Sku;
+            $productoEntity->Precio = $dto->Precio;
+            $productoEntity->Descuento = $dto->Descuento;
+            $productoEntity->IdTipoDescuento = $dto->IdTipoDescuento;
+            $productoEntity->Nombre = $dto->Nombre;
+
+            $productoResp = $this->_repository->Create($productoEntity, $lang);
+            if (! $productoResp->IsSuccess) {
+                DB::rollBack();
+
+                return new RespuestaEntity(
+                    $this->translations[$lang]['error_created'] ?? '',
+                    false,
+                    null
+                );
+            }
+
+            $output = new ProductoVarianteOutputDto;
             $output->Sku = $skuResp->Data;
             $output->Setup = $setupResp->Data;
+            $output->ProductoVariante = $productoResp->Data;
 
             DB::commit();
 
