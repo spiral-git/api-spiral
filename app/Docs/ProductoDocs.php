@@ -100,7 +100,7 @@ class ProductoDocs
                     new OA\Property(
                         property: "paises",
                         type: "array", 
-                        items: new OA\Items(type: "int"),
+                        items: new OA\Items(type: "integer"),
                         example: [
                             0,
                             0
@@ -134,7 +134,7 @@ class ProductoDocs
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "paises", "lang"],
+                required: ["idProducto", "categorias", "lang"],
                 properties: [
                     new OA\Property(
                         property: "idProducto",
@@ -144,7 +144,7 @@ class ProductoDocs
                     new OA\Property(
                         property: "categorias",
                         type: "array",
-                        items: new OA\Items(type: "int"),
+                        items: new OA\Items(type: "integer"),
                         example: [
                             0,
                             0
