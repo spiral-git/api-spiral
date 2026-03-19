@@ -9,6 +9,7 @@ use App\Http\Controllers\PaisProductoController;
 use App\Http\Controllers\ProductoBasicoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoCotizacionController;
+use App\Http\Controllers\ProductoPlanController;
 use App\Http\Controllers\ProductoVarianteController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\TipoCuponController;
@@ -19,7 +20,6 @@ use App\Http\Controllers\TipoSetupController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TipoUsuarioController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\ProductoPlanController;
 
 Route::prefix('start')->group(function () {
     Route::get('/', [StartController::class, 'Start']);
