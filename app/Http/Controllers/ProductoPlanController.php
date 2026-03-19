@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http;
+namespace App\Http\Controllers;
 
 use App\Application\DTOs\Producto\ProductoPlanInputDto;
 use App\Application\Services\ProductoPlanService;
@@ -40,7 +40,7 @@ class ProductoPlanController extends BaseController
         $dto->Descripcion = $request->input('descripcion') ?? '';
         $dto->Etiqueta = $request->input('etiqueta') ?? '';
 
-        $lang = $request->input('lang') ?? 'es';
+        $lang = $request->input('lang') ?? 'es';   
 
         $resp = $this->validarTokenHeaderOR(['ADMINISTRADOR', 'SOCIO'], $lang);
 
