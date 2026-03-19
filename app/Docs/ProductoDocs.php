@@ -331,7 +331,7 @@ class ProductoDocs
                         example: 0
                     ),
                     new OA\Property(
-                        property: "Descuento",
+                        property: "descuento",
                         type: "integer",
                         example: 0
                     ),
@@ -403,7 +403,7 @@ class ProductoDocs
                         example: 0
                     ),
                     new OA\Property(
-                        property: "Descuento",
+                        property: "descuento",
                         type: "integer",
                         example: 0
                     ),
