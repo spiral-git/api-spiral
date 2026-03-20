@@ -32,7 +32,7 @@ class PaisProductoService
         ]
     ];
 
-    public function __construct(PaisProductoRepository $repository, SkuService $skuService, PaisService $paisService, ProductoService $productoService)
+    public function __construct(IPaisProductoRepository $repository, SkuService $skuService, PaisService $paisService, ProductoService $productoService)
     {
         $this->_repository = $repository;
         $this->_productoService = $productoService;

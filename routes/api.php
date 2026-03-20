@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CategoriaProductoController;
+use App\Http\Controllers\DetallePlanController;
 use App\Http\Controllers\ImagenProductoController;
 use App\Http\Controllers\LenguajeController;
 use App\Http\Controllers\PaisController;
@@ -78,6 +79,8 @@ Route::prefix('producto')->group(function () {
     Route::post('/create-basico', [ProductoBasicoController::class, 'Create']);
     Route::post('/create-variante', [ProductoVarianteController::class, 'Create']);
     Route::post('/create-plan', [ProductoPlanController::class, 'Create']);
+    Route::post('/create-detalle-plan', [DetallePlanController::class, 'Create']);
+
 
 
 });

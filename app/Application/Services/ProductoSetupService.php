@@ -25,7 +25,7 @@ class ProductoSetupService
     ];
 
 
-    public function __construct(ProductoSetupRepository $repository)
+    public function __construct(ISetupProductoRepository $repository)
     {
         $this->_repository = $repository;
     }

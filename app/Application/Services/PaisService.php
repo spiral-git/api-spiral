@@ -5,6 +5,7 @@ namespace App\Application\Services;
 use App\Domain\Entity\PaisEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IPaisRepository;
+use App\Infrastructure\Adapters\PaisRepository;
 use Exception;
 
 class PaisService

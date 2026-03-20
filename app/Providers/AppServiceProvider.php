@@ -7,6 +7,7 @@ use App\Application\Services\ImagenProductoService;
 use App\Application\Services\LenguajeService;
 use App\Application\Services\PaisProductoService;
 use App\Application\Services\PaisService;
+use App\Application\Services\PlanDetalleService;
 use App\Application\Services\ProductoBasicoService;
 use App\Application\Services\ProductoCategoriaService;
 use App\Application\Services\ProductoCotizableService;
@@ -129,7 +130,6 @@ class AppServiceProvider extends ServiceProvider
             TipoSetupRepository::class
         );
 
-
         $this->app->singleton(
             LenguajeService::class,
             LenguajeService::class
@@ -214,7 +214,6 @@ class AppServiceProvider extends ServiceProvider
             DetallePlanRepository::class
         );
 
-
         $this->app->singleton(
             IProductoRepository::class,
             ProductoRepository::class
@@ -270,7 +269,17 @@ class AppServiceProvider extends ServiceProvider
             ProductoPlanService::class
         );
 
-        //va al final de todo
+        $this->app->singleton(
+            IDetallePlanRepository::class,
+            DetallePlanRepository::class
+        );
+
+        $this->app->singleton(
+            PlanDetalleService::class,
+            PlanDetalleService::class
+        );
+
+        // va al final de todo
         $this->app->singleton(
             StartService::class,
             StartService::class

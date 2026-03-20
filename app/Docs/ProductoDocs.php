@@ -1,435 +1,450 @@
 <?php
 
 namespace App\Docs;
+
 use OpenApi\Attributes as OA;
 
 class ProductoDocs
 {
-
-    //CREATED PRODUCTO BASE------------------------------------------------------------------
+    // CREATED PRODUCTO BASE------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-base",
-        tags: ["Producto"],
-        summary: "Crea producto base",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-base',
+        tags: ['Producto'],
+        summary: 'Crea producto base',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idTipoProducto", "idTipoPago", "idLenguaje", "nombre", "descripcion", "lang"],
+                required: ['idTipoProducto', 'idTipoPago', 'idLenguaje', 'nombre', 'descripcion', 'lang'],
                 properties: [
-                    new OA\Property(property: "idTipoProducto", type: "integer", example: 0),
-                    new OA\Property(property: "idTipoPago", type: "integer", example: 0),
-                    new OA\Property(property: "idLenguaje", type: "integer", example: 0),
-                    new OA\Property(property: "nombre", type: "string", example: ""),
-                    new OA\Property(property: "descripcion", type: "string", example: ""),
-                    new OA\Property(property: "lang", type: "string", example: "es")
+                    new OA\Property(property: 'idTipoProducto', type: 'integer', example: 0),
+                    new OA\Property(property: 'idTipoPago', type: 'integer', example: 0),
+                    new OA\Property(property: 'idLenguaje', type: 'integer', example: 0),
+                    new OA\Property(property: 'nombre', type: 'string', example: ''),
+                    new OA\Property(property: 'descripcion', type: 'string', example: ''),
+                    new OA\Property(property: 'lang', type: 'string', example: 'es'),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "producto base creado correctamente"
-            )
+                description: 'producto base creado correctamente'
+            ),
         ]
     )]
-    public function created_producto_base()
-    {
-    }
+    public function created_producto_base() {}
 
-    //CREATED PRODUCTO IMAGENES------------------------------------------------------------------
+    // CREATED PRODUCTO IMAGENES------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-imagen",
-        tags: ["Producto"],
-        summary: "Añadir imagen al producto",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-imagen',
+        tags: ['Producto'],
+        summary: 'Añadir imagen al producto',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "imagen", "lang"],
+                required: ['idProducto', 'imagen', 'lang'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "imagen",
-                        type: "string",
-                        example: ""
+                        property: 'imagen',
+                        type: 'string',
+                        example: ''
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
-                    )
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Imagen del producto asociada correctamente"
-            )
+                description: 'Imagen del producto asociada correctamente'
+            ),
         ]
     )]
-    public function created_producto_imagenes()
-    {
-    }
+    public function created_producto_imagenes() {}
 
-    //CREATED PRODUCTO PAISES------------------------------------------------------------------
+    // CREATED PRODUCTO PAISES------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-pais",
-        tags: ["Producto"],
-        summary: "Añadir pais en que esta disponible el producto",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-pais',
+        tags: ['Producto'],
+        summary: 'Añadir pais en que esta disponible el producto',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["sku", "idPais", "lang"],
+                required: ['sku', 'idPais', 'lang'],
                 properties: [
                     new OA\Property(
-                        property: "sku",
-                        type: "string",
-                        example: ""
+                        property: 'sku',
+                        type: 'string',
+                        example: ''
                     ),
                     new OA\Property(
-                        property: "idPais",
-                        type: "integer", 
+                        property: 'idPais',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
-                    )
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Pais asociado al producto correctamente"
-            )
+                description: 'Pais asociado al producto correctamente'
+            ),
         ]
     )]
-    public function created_producto_paises()
-    {
-    }
+    public function created_producto_paises() {}
 
-    //CREATED PRODUCTO CATEGORIAS------------------------------------------------------------------
+    // CREATED PRODUCTO CATEGORIAS------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-categoria",
-        tags: ["Producto"],
-        summary: "Añadir categoria asociada al producto",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-categoria',
+        tags: ['Producto'],
+        summary: 'Añadir categoria asociada al producto',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "idCategoria", "lang"],
+                required: ['idProducto', 'idCategoria', 'lang'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idCategoria",
-                        type: "integer",
+                        property: 'idCategoria',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
-                    )
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Categoria asociada al producto correctamente"
-            )
+                description: 'Categoria asociada al producto correctamente'
+            ),
         ]
     )]
-    public function created_producto_categoria()
-    {
-    }
+    public function created_producto_categoria() {}
 
-
-    //CREATED PRODUCTO COTIZABLE------------------------------------------------------------------
+    // CREATED PRODUCTO COTIZABLE------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-cotizacion",
-        tags: ["Producto"],
-        summary: "Crear producto cotizable",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-cotizacion',
+        tags: ['Producto'],
+        summary: 'Crear producto cotizable',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang"],
+                required: ['idProducto', 'maximoRecursos', 'idTipoSetup', 'amountSetup', 'lang'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "maximoRecursos",
-                        type: "integer",
+                        property: 'maximoRecursos',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoSetup",
-                        type: "integer",
+                        property: 'idTipoSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "amountSetup",
-                        type: "integer",
+                        property: 'amountSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
-                    )
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Producto cotizable creado correctamente"
-            )
+                description: 'Producto cotizable creado correctamente'
+            ),
         ]
     )]
-    public function created_producto_cotizacion()
-    {
-    }
+    public function created_producto_cotizacion() {}
 
-
-    //CREATED PRODUCTO BASICO------------------------------------------------------------------
+    // CREATED PRODUCTO BASICO------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-basico",
-        tags: ["Producto"],
-        summary: "Crear producto basico",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-basico',
+        tags: ['Producto'],
+        summary: 'Crear producto basico',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang"],
+                required: ['idProducto', 'maximoRecursos', 'idTipoSetup', 'amountSetup', 'lang'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "maximoRecursos",
-                        type: "integer",
+                        property: 'maximoRecursos',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoSetup",
-                        type: "integer",
+                        property: 'idTipoSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "amountSetup",
-                        type: "integer",
+                        property: 'amountSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "precio",
-                        type: "integer",
+                        property: 'precio',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoDescuento",
-                        type: "integer",
+                        property: 'idTipoDescuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "Descuento",
-                        type: "integer",
+                        property: 'Descuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
-                    )
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Producto basico creado correctamente"
-            )
+                description: 'Producto basico creado correctamente'
+            ),
         ]
     )]
-    public function created_producto_basico()
-    {
-    }
+    public function created_producto_basico() {}
 
-
-    
-
-    //CREATED PRODUCTO VARIANTE------------------------------------------------------------------
+    // CREATED PRODUCTO VARIANTE------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-variante",
-        tags: ["Producto"],
-        summary: "Crear producto variante",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-variante',
+        tags: ['Producto'],
+        summary: 'Crear producto variante',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang", "nombre"],
+                required: ['idProducto', 'maximoRecursos', 'idTipoSetup', 'amountSetup', 'lang', 'nombre'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "maximoRecursos",
-                        type: "integer",
+                        property: 'maximoRecursos',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoSetup",
-                        type: "integer",
+                        property: 'idTipoSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "amountSetup",
-                        type: "integer",
+                        property: 'amountSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "precio",
-                        type: "integer",
+                        property: 'precio',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoDescuento",
-                        type: "integer",
+                        property: 'idTipoDescuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "descuento",
-                        type: "integer",
+                        property: 'descuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
                     ),
 
                     new OA\Property(
-                        property: "nombre",
-                        type: "string",
-                        example: ""
-                    )
+                        property: 'nombre',
+                        type: 'string',
+                        example: ''
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Producto variante creado correctamente"
-            )
+                description: 'Producto variante creado correctamente'
+            ),
         ]
     )]
-    public function created_producto_variante()
-    {
-    }
+    public function created_producto_variante() {}
 
-
-     //CREATED PRODUCTO PLAN------------------------------------------------------------------
+    // CREATED PRODUCTO PLAN------------------------------------------------------------------
     #[OA\Post(
-        path: "/producto/create-plan",
-        tags: ["Producto"],
-        summary: "Crear producto plan",
-        security: [["bearerAuth" => []]],
+        path: '/producto/create-plan',
+        tags: ['Producto'],
+        summary: 'Crear producto plan',
+        security: [['bearerAuth' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["idProducto", "maximoRecursos", "idTipoSetup", "amountSetup", "lang", "nombre", "descripcion", "etiqueta"],
+                required: ['idProducto', 'maximoRecursos', 'idTipoSetup', 'amountSetup', 'lang', 'nombre', 'descripcion', 'etiqueta'],
                 properties: [
                     new OA\Property(
-                        property: "idProducto",
-                        type: "integer",
+                        property: 'idProducto',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "maximoRecursos",
-                        type: "integer",
+                        property: 'maximoRecursos',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoSetup",
-                        type: "integer",
+                        property: 'idTipoSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "amountSetup",
-                        type: "integer",
+                        property: 'amountSetup',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "precio",
-                        type: "integer",
+                        property: 'precio',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "idTipoDescuento",
-                        type: "integer",
+                        property: 'idTipoDescuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "descuento",
-                        type: "integer",
+                        property: 'descuento',
+                        type: 'integer',
                         example: 0
                     ),
                     new OA\Property(
-                        property: "lang",
-                        type: "string",
-                        example: "es"
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
                     ),
 
                     new OA\Property(
-                        property: "nombre",
-                        type: "string",
-                        example: ""
+                        property: 'nombre',
+                        type: 'string',
+                        example: ''
                     ),
 
                     new OA\Property(
-                        property: "descripcion",
-                        type: "string",
-                        example: ""
+                        property: 'descripcion',
+                        type: 'string',
+                        example: ''
                     ),
 
                     new OA\Property(
-                        property: "etiqueta",
-                        type: "string",
-                        example: ""
-                    )
+                        property: 'etiqueta',
+                        type: 'string',
+                        example: ''
+                    ),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Producto plan creado correctamente"
-            )
+                description: 'Producto plan creado correctamente'
+            ),
         ]
     )]
-    public function created_producto_plan()
-    {
-    }
+    public function created_producto_plan() {}
 
+    // CREATED Detalle PLAN------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/create-detalle-plan',
+        tags: ['Producto'],
+        summary: 'Crear detalle plan',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['idPlan', 'detalle', 'idTipoSetup', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'idPlan',
+                        type: 'integer',
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: 'detalle',
+                        type: 'string',
+                        example: ''
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Detalle plan creado correctamente'
+            ),
+        ]
+    )]
+    public function created_producto_detalle_plan() {}
 }

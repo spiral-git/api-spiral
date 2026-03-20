@@ -7,6 +7,7 @@ use App\Application\Validations\ImagenProductoValidation;
 use App\Domain\Entity\ImagenProductoEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IImagenRepository;
+use App\Infrastructure\Adapters\ImagenRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 

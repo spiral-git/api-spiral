@@ -10,6 +10,7 @@ use App\Application\Validations\ProductoBasicoValidation;
 use App\Domain\Entity\ProductoBasicoEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IProductoBasicoRepository;
+use App\Infrastructure\Adapters\ProductoBasicoRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,7 @@ class ProductoBasicoService
     {
         try {
 
-            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId, $this->_tipoProductoService);
+            $validacionesResp = ProductoBasicoValidation::validar($dto, $this->_productoService, $this->_tipoSetupService, $lang, $this->_tipoDescuentoService, $ownerId, $this->_tipoProductoService, $this->_skuService);
 
             if (!$validacionesResp->IsSuccess) {
                 return $validacionesResp;

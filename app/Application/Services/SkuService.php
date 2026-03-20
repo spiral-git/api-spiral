@@ -23,7 +23,7 @@ class SkuService
         ]
     ];
 
-    public function __construct(SkuRepository $repository)
+    public function __construct(ISkuRepository $repository)
     {
         $this->_repository = $repository;
     }

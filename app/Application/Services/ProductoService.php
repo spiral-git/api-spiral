@@ -10,6 +10,7 @@ use App\Application\Services\TipoProductoService;
 use App\Application\Validations\ProductoValidation;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IProductoRepository;
+use App\Infrastructure\Adapters\ProductoRepository;
 use Exception;
 
 class ProductoService

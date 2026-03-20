@@ -112,6 +112,48 @@ class ProductoPlanRepository implements IProductoPlanRepository
         }
     }
 
+    public function GetById(int $id, string $lang) : RespuestaEntity{
+         try {
+
+            $row = DB::table($this->table)
+                ->where('id', $id)
+                ->first();
+
+            if (!$row) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['plan_not_found'] ?? "",
+                    false,
+                    null
+                );
+            }
+
+            $entity = new ProductoPlanEntity();
+            $entity->Id = $row->id;
+            $entity->SkuProducto = $row->sku_producto;
+            $entity->Precio = $row->precio;
+            $entity->Descuento = $row->descuento;
+            $entity->Nombre = $row->nombre;
+            $entity->Descripcion = $row->descripcion;
+            $entity->Etiqueta = $row->etiqueta;
+            $entity->IdTipoDescuento = $row->id_tipo_descuento;
+
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['plan_found'] ?? "",
+                true,
+                $entity
+            );
+
+        } catch (Exception $e) {
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
+
     public function GetBySku(string $sku, string $lang): RespuestaEntity
     {
         try {

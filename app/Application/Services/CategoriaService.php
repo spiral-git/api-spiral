@@ -5,6 +5,7 @@ namespace App\Application\Services;
 use App\Domain\Entity\CategoriaEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\ICategoriaRepository;
+use App\Infrastructure\Adapters\CategoriaRepository;
 use Exception;
 
 class CategoriaService

@@ -5,6 +5,7 @@ namespace App\Application\Services;
 use App\Domain\Entity\LenguajeEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\ILenguajeRepository;
+use App\Infrastructure\Adapters\LenguajeRepository;
 use Exception;
 
 class LenguajeService

@@ -4,6 +4,7 @@ namespace App\Application\Validations;
 
 use App\Application\DTOs\Producto\ProductoBasicoInputDto;
 use App\Application\Services\ProductoService;
+use App\Application\Services\SkuService;
 use App\Application\Services\TipoDescuentoService;
 use App\Application\Services\TipoProductoService;
 use App\Application\Services\TipoSetupService;
@@ -20,6 +21,7 @@ class ProductoBasicoValidation
         "validation_id_tipodescuento" => "El Id del tipo de descuento es obligatorio",
         "owner_invalid" => "El owner no es dueño del producto",
         "type_product_invalid" => "El tipo de producto no es valido",
+        'exist_product' => 'Ya existe el producto basico',
     ],
     "en" => [
         "validation_success" => "Validation successful",
@@ -29,14 +31,15 @@ class ProductoBasicoValidation
         "validation_id_tipodescuento" => "Discount type id is required",
          "owner_invalid" => "The owner does not own the product",
          "type_product_invalid" => "Type product is invalid",
+         'exist_product' => 'The basic product already exists',
     ]
 ];
 
-    public static function validar(ProductoBasicoInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService, int $ownerId, TipoProductoService $tipoProductoService): RespuestaEntity 
+    public static function validar(ProductoBasicoInputDto $dto, ProductoService $productoService, TipoSetupService $tipoSetupService, string $lang, TipoDescuentoService $tipoDescuentoService, int $ownerId, TipoProductoService $tipoProductoService, SkuService $skuService): RespuestaEntity 
     {
         $errores = [];
 
-        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId, $tipoProductoService);
+        self::validarProducto($dto->IdProducto, $errores, $productoService, $lang, $ownerId, $tipoProductoService, $skuService);
         self::validarTipoSetup($dto->IdTipoSetup, $errores, $tipoSetupService, $lang);
         self::validarTipoDescuento($dto->IdTipoDescuento, $errores, $tipoDescuentoService, $lang);
 
@@ -49,7 +52,7 @@ class ProductoBasicoValidation
     }
 
 
-    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId, TipoProductoService $tipoProductoService): void
+    private static function validarProducto(?int $valor, array &$errores, ProductoService $productoService, string $lang, int $ownerId, TipoProductoService $tipoProductoService, SkuService $skuService): void
     {
         if (empty($valor) || $valor <= 0) {
             $errores["idProducto"] = self::$translations[$lang]['validation_idproducto'];
@@ -77,6 +80,13 @@ class ProductoBasicoValidation
 
         if($respTipoProducto->Data->Id != $resp->Data->IdTipoProducto){
             $errores["producto"] = self::$translations[$lang]['type_product_invalid'];
+            return;
+        }
+
+        $existProducto = $skuService->GetByProducto($resp->Data->Id, $lang);
+        if ($existProducto->IsSuccess) {
+            $errores['producto'] = self::$translations[$lang]['exist_product'];
+
             return;
         }
     }

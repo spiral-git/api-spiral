@@ -10,6 +10,7 @@ use App\Application\Validations\ProductoPlanValidation;
 use App\Domain\Entity\ProductoPlanEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IProductoPlanRepository;
+use App\Infrastructure\Adapters\ProductoPlanRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -139,4 +140,20 @@ class ProductoPlanService
             );
         }
     }
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+
+            return $this->_repository->GetById($id, $lang);
+
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? '',
+                false,
+                null
+            );
+        }
+    }
+
 }

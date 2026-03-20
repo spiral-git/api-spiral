@@ -28,7 +28,7 @@ class ProductoCategoriaService
         ]
     ];
 
-    public function __construct(CategoriaProductoRepository $repository, CategoriaService $categoriaService, ProductoService $productoService)
+    public function __construct(ICategoriaProductoRepository $repository, CategoriaService $categoriaService, ProductoService $productoService)
     {
         $this->_repository = $repository;
         $this->_categoriaService = $categoriaService;
