@@ -47,7 +47,8 @@ class ProductoVarianteRepository implements IProductoVarianteRepository
                 'sku_producto' => $entity->SkuProducto,
                 'precio' => $entity->Precio,
                 'descuento' => $entity->Descuento,
-                'nombre' => $entity->Nombre
+                'nombre' => $entity->Nombre,
+                'id_tipo_descuento' => $entity->IdTipoDescuento,
             ]);
 
             $entity->Id = $id;
@@ -77,7 +78,8 @@ class ProductoVarianteRepository implements IProductoVarianteRepository
                     'sku_producto' => $entity->SkuProducto,
                     'precio' => $entity->Precio,
                     'descuento' => $entity->Descuento,
-                    'nombre' => $entity->Nombre
+                    'nombre' => $entity->Nombre,
+                    'id_tipo_descuento' => $entity->IdTipoDescuento,
                 ]);
 
             if ($updated === 0) {
