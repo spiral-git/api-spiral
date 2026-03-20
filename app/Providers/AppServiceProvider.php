@@ -13,6 +13,7 @@ use App\Application\Services\ProductoCategoriaService;
 use App\Application\Services\ProductoCotizableService;
 use App\Application\Services\ProductoPlanService;
 use App\Application\Services\ProductoService;
+use App\Application\Services\ProductoSetupService;
 use App\Application\Services\ProductoVarianteService;
 use App\Application\Services\SkuService;
 use App\Application\Services\StartService;
@@ -35,6 +36,7 @@ use App\Domain\Ports\IProductoBasicoRepository;
 use App\Domain\Ports\IProductoPlanRepository;
 use App\Domain\Ports\IProductoRepository;
 use App\Domain\Ports\IProductoVarianteRepository;
+use App\Domain\Ports\ISetupProductoRepository;
 use App\Domain\Ports\ISkuRepository;
 use App\Domain\Ports\ITipoCuponRepository;
 use App\Domain\Ports\ITipoDescuentoRepository;
@@ -54,6 +56,7 @@ use App\Infrastructure\Adapters\PaisRepository;
 use App\Infrastructure\Adapters\ProductoBasicoRepository;
 use App\Infrastructure\Adapters\ProductoPlanRepository;
 use App\Infrastructure\Adapters\ProductoRepository;
+use App\Infrastructure\Adapters\ProductoSetupRepository;
 use App\Infrastructure\Adapters\ProductoVarianteRepository;
 use App\Infrastructure\Adapters\SkuRepository;
 use App\Infrastructure\Adapters\TipoCuponRepository;
@@ -210,11 +213,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            IDetallePlanRepository::class,
-            DetallePlanRepository::class
-        );
-
-        $this->app->singleton(
             IProductoRepository::class,
             ProductoRepository::class
         );
@@ -237,6 +235,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             TipoDescuentoService::class,
             TipoDescuentoService::class
+        );
+
+         $this->app->singleton(
+            ISetupProductoRepository::class,
+            ProductoSetupRepository::class
+        );
+
+        $this->app->singleton(
+            ProductoSetupService::class,
+            ProductoSetupService::class
         );
 
         $this->app->singleton(
