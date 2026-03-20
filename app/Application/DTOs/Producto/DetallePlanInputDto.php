@@ -4,7 +4,7 @@ namespace App\Application\DTOs\Producto;
 
 class DetallePlanInputDto
 {
-    public int $Detalle;
+    public string $Detalle;
     public int $IdProductoPlan;
 
     public function __construct()
