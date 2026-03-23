@@ -18,21 +18,23 @@ use App\Http\Controllers\TipoDescuentoController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\TipoProductoController;
 use App\Http\Controllers\TipoSetupController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TipoUsuarioController;
+use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('start')->group(function () {
     Route::get('/', [StartController::class, 'Start']);
 });
 
-Route::get('/swagger-setup', function() {
+Route::get('/swagger-setup', function () {
 
     $output = [];
     $output[] = \Illuminate\Support\Facades\Artisan::call('config:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('route:clear');
     $output[] = \Illuminate\Support\Facades\Artisan::call('package:discover');
     $output[] = \Illuminate\Support\Facades\Artisan::call('l5-swagger:generate');
+
     return response()->json(['done' => true, 'output' => $output]);
 
 });
@@ -44,7 +46,6 @@ Route::prefix('usuario')->group(function () {
     Route::post('/logout-all', [UsuarioController::class, 'logoutAll']);
     Route::post('/create', [UsuarioController::class, 'crearUsuario']);
     Route::post('/create-socio', [UsuarioController::class, 'crearSocio']);
-
 
 });
 
@@ -81,8 +82,17 @@ Route::prefix('producto')->group(function () {
     Route::post('/create-plan', [ProductoPlanController::class, 'Create']);
     Route::post('/create-detalle-plan', [DetallePlanController::class, 'Create']);
 
+    Route::post('/getall', [ProductoController::class, 'GetAll']);
+    Route::post('/get-cotizable-by-id', [ProductoCotizacionController::class, 'GetById']);
+    Route::post('/get-basico-by-id', [ProductoBasicoController::class, 'GetById']);
+    Route::post('/get-plan-by-id', [ProductoPlanController::class, 'GetById']);
+    Route::post('/get-variante-by-id', [ProductoVarianteController::class, 'GetById']);
 
 
 });
 
+Route::prefix('uploads')->group(function () {
 
+    Route::post('/upload', [UploadFileController::class, 'uploadFiles']);
+
+});

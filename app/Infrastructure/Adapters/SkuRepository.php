@@ -14,25 +14,25 @@ class SkuRepository implements ISkuRepository
 
     private array $translations = [
 
-        "es" => [
-            "sku_created" => "Sku creado correctamente",
-            "not_found" => "No encontrado",
-            "found" => "Encontrado",
-            "error" => "Ocurrió un error"
+        'es' => [
+            'sku_created' => 'Sku creado correctamente',
+            'not_found' => 'No encontrado',
+            'found' => 'Encontrado',
+            'error' => 'Ocurrió un error',
         ],
 
-        "en" => [
-            "sku_created" => "Sku created successfully",
-            "not_found" => "Not found",
-            "found" => "Found",
-            "error" => "An error occurred"
-        ]
+        'en' => [
+            'sku_created' => 'Sku created successfully',
+            'not_found' => 'Not found',
+            'found' => 'Found',
+            'error' => 'An error occurred',
+        ],
 
     ];
 
     public function __construct()
     {
-        $this->table = "SKU_PRODUCTO";
+        $this->table = 'SKU_PRODUCTO';
     }
 
     public function Create(SkuProductoEntity $entity, string $lang): RespuestaEntity
@@ -44,18 +44,18 @@ class SkuRepository implements ISkuRepository
                 'id_producto' => $entity->IdProducto,
                 'status' => $entity->Status,
                 'num_recursos_max' => $entity->MaximoRecursos,
-                'id_setup_producto' => $entity->IdSetupProducto
+                'id_setup_producto' => $entity->IdSetupProducto,
             ]);
 
             return new RespuestaEntity(
-                $this->translations[$lang]['sku_created'] ?? "",
+                $this->translations[$lang]['sku_created'] ?? '',
                 true,
                 $entity
             );
 
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );
@@ -66,18 +66,18 @@ class SkuRepository implements ISkuRepository
     {
         try {
             $row = DB::table($this->table)
-                ->where("sku", $sku)
+                ->where('sku', $sku)
                 ->first();
 
-            if (!$row) {
+            if (! $row) {
                 return new RespuestaEntity(
-                    $this->translations[$lang]['not_found'] ?? "",
+                    $this->translations[$lang]['not_found'] ?? '',
                     false,
                     null
                 );
             }
 
-            $skuEntity = new SkuProductoEntity();
+            $skuEntity = new SkuProductoEntity;
             $skuEntity->Sku = $row->sku;
             $skuEntity->Status = $row->status;
             $skuEntity->IdProducto = $row->id_producto;
@@ -85,14 +85,14 @@ class SkuRepository implements ISkuRepository
             $skuEntity->IdSetupProducto = $row->id_setup_producto;
 
             return new RespuestaEntity(
-                $this->translations[$lang]['found'] ?? "",
+                $this->translations[$lang]['found'] ?? '',
                 true,
                 $skuEntity
             );
 
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );
@@ -103,18 +103,18 @@ class SkuRepository implements ISkuRepository
     {
         try {
             $row = DB::table($this->table)
-                ->where("id_producto", $idProducto)
+                ->where('id_producto', $idProducto)
                 ->first();
 
-            if (!$row) {
+            if (! $row) {
                 return new RespuestaEntity(
-                    $this->translations[$lang]['not_found'] ?? "",
+                    $this->translations[$lang]['not_found'] ?? '',
                     false,
                     null
                 );
             }
 
-            $skuEntity = new SkuProductoEntity();
+            $skuEntity = new SkuProductoEntity;
             $skuEntity->Sku = $row->sku;
             $skuEntity->Status = $row->status;
             $skuEntity->IdProducto = $row->id_producto;
@@ -122,14 +122,55 @@ class SkuRepository implements ISkuRepository
             $skuEntity->IdSetupProducto = $row->id_setup_producto;
 
             return new RespuestaEntity(
-                $this->translations[$lang]['found'] ?? "",
+                $this->translations[$lang]['found'] ?? '',
                 true,
                 $skuEntity
             );
 
         } catch (Exception $e) {
             return new RespuestaEntity(
-                $this->translations[$lang]['error'] ?? "",
+                $this->translations[$lang]['error'] ?? '',
+                false,
+                null
+            );
+        }
+    }
+
+    public function GetAllByProducto(int $idProducto, string $lang): RespuestaEntity
+    {
+        try {
+            $rows = DB::table($this->table)
+                ->where('id_producto', $idProducto)
+                ->get();
+
+            if ($rows->isEmpty()) {
+                return new RespuestaEntity(
+                    $this->translations[$lang]['not_found'] ?? '',
+                    false,
+                    null
+                );
+            }
+
+            $skus = $rows->map(function ($row) {
+                $skuEntity = new SkuProductoEntity;
+                $skuEntity->Sku = $row->sku;
+                $skuEntity->Status = $row->status;
+                $skuEntity->IdProducto = $row->id_producto;
+                $skuEntity->MaximoRecursos = $row->num_recursos_max;
+                $skuEntity->IdSetupProducto = $row->id_setup_producto;
+
+                return $skuEntity;
+            });
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['found'] ?? '',
+                true,
+                $skus
+            );
+
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? '',
                 false,
                 null
             );

@@ -96,7 +96,7 @@ class DetallePlanRepository implements IDetallePlanRepository
         }
     }
 
-    public function GetAllByProducto(string $idPlan, string $lang): RespuestaEntity
+    public function GetAllByPlan(string $idPlan, string $lang): RespuestaEntity
     {
         try {
             $row = DB::table($this->table)

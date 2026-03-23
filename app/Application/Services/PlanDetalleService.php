@@ -79,4 +79,20 @@ class PlanDetalleService
             );
         }
     }
+
+
+    public function GetById(int $id, string $lang): RespuestaEntity
+    {
+        try {
+            
+            return $this->_repository->GetAllByPlan($id, $lang); 
+            
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
 }

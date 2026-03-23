@@ -59,4 +59,28 @@ class ProductoVarianteController extends BaseController
             $respuesta->IsSuccess ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST
         );
     }
+
+
+    public function GetById(Request $request)
+    {
+        $lang = $request->input('lang') ?? 'es';
+        $id = $request->input('id') ?? 0;
+
+
+        $resp = $this->validarTokenHeaderOR(['ADMINISTRADOR', 'SOCIO'], $lang);
+
+        if (! $resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $respuesta = $this->_service->GetById($lang, $id);
+
+        return response()->json(
+            $respuesta,
+            $respuesta->IsSuccess ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST
+        );
+    }
 }

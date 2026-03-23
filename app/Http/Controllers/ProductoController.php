@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductoController extends BaseController
 {
     private UsuarioService $_usuarioService;
+
     private ProductoService $_service;
 
     private TipoUsuarioService $_tipoUsuarioService;
-
 
     public function __construct(UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService, ProductoService $service)
     {
@@ -27,17 +27,17 @@ class ProductoController extends BaseController
 
     public function Create(Request $request)
     {
-        $dto = new ProductoInputDto();
+        $dto = new ProductoInputDto;
         $dto->IdTipoProducto = $request->input('idTipoProducto') ?? 0;
-        $dto->IdTipoPago     = $request->input('idTipoPago') ?? 0;
-        $dto->IdLenguaje     = $request->input('idLenguaje') ?? 0;
-        $dto->Nombre         = $request->input('nombre') ?? "";
-        $dto->Descripcion    = $request->input('descripcion') ?? "";
-        $lang   = $request->input('lang') ?? "es";
+        $dto->IdTipoPago = $request->input('idTipoPago') ?? 0;
+        $dto->IdLenguaje = $request->input('idLenguaje') ?? 0;
+        $dto->Nombre = $request->input('nombre') ?? '';
+        $dto->Descripcion = $request->input('descripcion') ?? '';
+        $lang = $request->input('lang') ?? 'es';
 
-        $resp = $this->validarTokenHeaderOR(["ADMINISTRADOR", "SOCIO"], $lang);
+        $resp = $this->validarTokenHeaderOR(['ADMINISTRADOR', 'SOCIO'], $lang);
 
-        if (!$resp->IsSuccess) {
+        if (! $resp->IsSuccess) {
             return response()->json(
                 $resp,
                 Response::HTTP_UNAUTHORIZED
@@ -56,7 +56,33 @@ class ProductoController extends BaseController
         );
     }
 
-    
+    public function GetAll(Request $request)
+    {
+        $lang = $request->input('lang') ?? 'es';
+        $perPage = $request->input('perPage') ?? 10;
+        $page = $request->input('page') ?? 1;
+        $filter = $request->input('filter') ?? "";
 
-    
+
+        $resp = $this->validarTokenHeaderOR(['ADMINISTRADOR', 'SOCIO'], $lang);
+
+        if (! $resp->IsSuccess) {
+            return response()->json(
+                $resp,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $user = $resp->Data['usuario'];
+
+        $ownerId = $user->Id;
+
+        $respuesta = $this->_service->GetAll($lang, $perPage, $page, $ownerId, $filter);
+
+        return response()->json(
+            $respuesta,
+            $respuesta->IsSuccess ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST
+        );
+    }
+
 }

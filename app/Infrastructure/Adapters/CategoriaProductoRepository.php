@@ -66,6 +66,7 @@ class CategoriaProductoRepository implements ICategoriaProductoRepository
         }
     }
 
+
     public function ExistCategoriaProducto(int $idCategoria, string $idProducto, string $lang): RespuestaEntity
     {
         try {

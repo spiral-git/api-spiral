@@ -87,4 +87,18 @@ class ProductoCategoriaService
             );
         }
     }
+
+
+    public function GetAllByProducto(int $idProducto, string $lang): RespuestaEntity
+    {
+        try {
+            return $this->_repository->GetAllByProducto($idProducto, $lang);
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? "",
+                false,
+                null
+            );
+        }
+    }
 }

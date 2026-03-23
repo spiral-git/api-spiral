@@ -2,6 +2,8 @@
 
 namespace App\Application\Services;
 
+use App\Application\DTOs\Producto\GetProductoVarianteOutputBase;
+use App\Application\DTOs\Producto\GetProductoVarianteOutputDto;
 use App\Application\DTOs\Producto\ProductoVarianteInputDto;
 use App\Application\DTOs\Producto\ProductoVarianteOutputDto;
 use App\Application\DTOs\Setup\SetupInputDto;
@@ -29,20 +31,28 @@ class ProductoVarianteService
 
     protected TipoProductoService $_tipoProductoService;
 
+    protected ImagenProductoService $_imagenProductoService;
+
+    protected PaisProductoService $_paisProductoService;
+
+    protected ProductoCategoriaService $_categoriaProductoService;
+
     private array $translations = [
         'es' => [
             'error' => 'Ocurrió un error',
             'success_created' => 'Producto variante creado exitosamente',
             'error_created' => 'Error al crear el producto variante',
+            'product_get_success' => 'Producto obtenido correctamente',
         ],
         'en' => [
             'error' => 'An error occurred',
             'success_created' => 'Variant product created successfully',
             'error_created' => 'Error creating variant product',
+            'product_get_success' => 'Product retrieved successfully',
         ],
     ];
 
-    public function __construct(IProductoVarianteRepository $repository, TipoProductoService $tipoProductoService, SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService)
+    public function __construct(IProductoVarianteRepository $repository, TipoProductoService $tipoProductoService, SkuService $skuService, ProductoSetupService $productoSetupService, ProductoService $productoService, TipoSetupService $tipoSetupService, TipoDescuentoService $tipoDescuentoService, ImagenProductoService $imagenProductoService, PaisProductoService $paisProductoService, ProductoCategoriaService $categoriaProductoService)
     {
         $this->_skuService = $skuService;
         $this->_productoSetupService = $productoSetupService;
@@ -51,6 +61,9 @@ class ProductoVarianteService
         $this->_tipoDescuentoService = $tipoDescuentoService;
         $this->_repository = $repository;
         $this->_tipoProductoService = $tipoProductoService;
+        $this->_categoriaProductoService = $categoriaProductoService;
+        $this->_paisProductoService = $paisProductoService;
+        $this->_imagenProductoService = $imagenProductoService;
 
     }
 
@@ -135,6 +148,81 @@ class ProductoVarianteService
                 false,
                 null
             );
+        }
+    }
+
+    public function GetById(string $lang, string $id): RespuestaEntity
+    {
+        try {
+
+            $skuResp = $this->_skuService->GetAllByProducto($id, $lang);
+
+            if (! $skuResp->IsSuccess) {
+                return $skuResp;
+            }
+
+            $imagenesProductoResp = $this->_imagenProductoService->GetAllByProducto($id, $lang);
+            if (! $imagenesProductoResp->IsSuccess) {
+                return $imagenesProductoResp;
+            }
+
+            $categoriaProductoResp = $this->_categoriaProductoService->GetAllByProducto($id, $lang);
+            if (! $categoriaProductoResp->IsSuccess) {
+                return $categoriaProductoResp;
+            }
+
+            $dataProductoResp = $this->_productoService->GetById($id, $lang);
+            if (! $dataProductoResp->IsSuccess) {
+                return $dataProductoResp;
+            }
+
+            $outputs = [];
+
+            foreach ($skuResp->Data as $Sku) {
+
+                $setupResp = $this->_productoSetupService->GetById($Sku->IdSetupProducto, $lang);
+                if (! $setupResp->IsSuccess) {
+                    return $setupResp;
+                }
+
+                $paisesProductoResp = $this->_paisProductoService->GetAllBySku($Sku->Sku, $lang);
+                if (! $paisesProductoResp->IsSuccess) {
+                    return $paisesProductoResp;
+                }
+
+                $productoVarianteResp = $this->_repository->GetBySku($Sku->Sku, $lang);
+                if (! $productoVarianteResp->IsSuccess) {
+                    return $productoVarianteResp;
+                }
+
+                $output = new GetProductoVarianteOutputBase;
+                $output->Sku = $skuResp->Data;
+                $output->Setup = $setupResp->Data;
+                $output->ProductoVariante = $productoVarianteResp->Data;
+                $output->Paises = $paisesProductoResp->Data;
+
+                $outputs[] = $output;
+            }
+
+            $outputVariantes = new GetProductoVarianteOutputDto;
+            $outputVariantes->Imagenes = $imagenesProductoResp->Data;
+            $outputVariantes->Variantes = $outputs;
+            $outputVariantes->Producto = $dataProductoResp->Data;
+            $outputVariantes->Categorias = $categoriaProductoResp->Data;
+
+            return new RespuestaEntity(
+                $this->translations[$lang]['product_get_success'] ?? '',
+                true,
+                $outputVariantes
+            );
+
+        } catch (Exception $e) {
+            return new RespuestaEntity(
+                $this->translations[$lang]['error'] ?? '',
+                false,
+                null
+            );
+
         }
     }
 }

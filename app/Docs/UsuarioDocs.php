@@ -106,7 +106,7 @@ class UsuarioDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: "Usuario creado"
             )
         ]
@@ -138,7 +138,7 @@ class UsuarioDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: "Usuario creado"
             )
         ]

@@ -28,7 +28,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'producto base creado correctamente'
             ),
         ]
@@ -66,7 +66,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Imagen del producto asociada correctamente'
             ),
         ]
@@ -104,7 +104,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Pais asociado al producto correctamente'
             ),
         ]
@@ -142,7 +142,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Categoria asociada al producto correctamente'
             ),
         ]
@@ -190,7 +190,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Producto cotizable creado correctamente'
             ),
         ]
@@ -253,7 +253,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Producto basico creado correctamente'
             ),
         ]
@@ -322,7 +322,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Producto variante creado correctamente'
             ),
         ]
@@ -403,7 +403,7 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Producto plan creado correctamente'
             ),
         ]
@@ -441,10 +441,185 @@ class ProductoDocs
         ),
         responses: [
             new OA\Response(
-                response: 200,
+                response: 201,
                 description: 'Detalle plan creado correctamente'
             ),
         ]
     )]
     public function created_producto_detalle_plan() {}
+
+    // Get All------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/getall',
+        tags: ['Producto'],
+        summary: 'Obtener todos los productos de un owner',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['perPage', 'page', 'filter', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'perPage',
+                        type: 'integer',
+                        example: 10
+                    ),
+                    new OA\Property(
+                        property: 'page',
+                        type: 'integer',
+                        example: 1
+                    ),
+                    new OA\Property(
+                        property: 'filter',
+                        type: 'string',
+                        example: ''
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'productos obtenidos correctamente'
+            ),
+        ]
+    )]
+    public function get_all() {}
+
+    // Get Cotizable By Id------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/get-cotizable-by-id',
+        tags: ['Producto'],
+        summary: 'Obtener los datos de un producto cotizable por el id del producto',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['id', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'id',
+                        type: 'integer',
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'producto obtenido correctamente'
+            ),
+        ]
+    )]
+    public function get_cotizable_by_id() {}
+
+    // Get basico By Id------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/get-basico-by-id',
+        tags: ['Producto'],
+        summary: 'Obtener los datos de un producto basico por el id del producto',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['id', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'id',
+                        type: 'integer',
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'producto obtenido correctamente'
+            ),
+        ]
+    )]
+    public function get_basico_by_id() {}
+
+    // Get plan By Id------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/get-plan-by-id',
+        tags: ['Producto'],
+        summary: 'Obtener los datos de un producto plan por el id del producto',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['id', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'id',
+                        type: 'integer',
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'producto obtenido correctamente'
+            ),
+        ]
+    )]
+    public function get_plan_by_id() {}
+
+    // Get plan By Id------------------------------------------------------------------
+    #[OA\Post(
+        path: '/producto/get-variante-by-id',
+        tags: ['Producto'],
+        summary: 'Obtener los datos de un producto variante por el id del producto',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['id', 'lang'],
+                properties: [
+                    new OA\Property(
+                        property: 'id',
+                        type: 'integer',
+                        example: 0
+                    ),
+                    new OA\Property(
+                        property: 'lang',
+                        type: 'string',
+                        example: 'es'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'producto obtenido correctamente'
+            ),
+        ]
+    )]
+    public function get_variante_by_id() {}
 }
