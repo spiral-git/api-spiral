@@ -10,7 +10,7 @@ class UploadsDoc
         path: '/uploads/upload',
         tags: ['Uploads'],
         summary: 'Subir imagen, video o pdf',
-        
+        security: [['bearerAuth' => []]],
         parameters: [
             new OA\Parameter(
                 name: 'dir',
