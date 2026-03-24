@@ -8,22 +8,22 @@ use App\Domain\Entity\ProductoEntity;
 
 class GetProductoVarianteOutputDto
 {
-     /**
-     * @var GetProductoVarianteOutputBase
+    /**
+     * @var GetProductoVarianteOutputBase[]
      */
-    public array $Variantes;
+    public $Variantes;
 
-     /**
-     * @var ImagenProductoEntity
+    /**
+     * @var ImagenProductoEntity[]
      */
-    public array $Imagenes = [];
+    public $Imagenes = [];
 
-       /**
-     * @var CategoriaProductoEntity
+    /**
+     * @var CategoriaProductoEntity[]
      */
-    public array $Categorias = [];
+    public $Categorias = [];
 
-        public ProductoEntity $Producto;
+    public ProductoEntity $Producto;
 
     public function __construct() {}
 }

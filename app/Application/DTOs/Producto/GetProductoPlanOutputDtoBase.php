@@ -11,23 +11,22 @@ use App\Domain\Entity\SkuProductoEntity;
 
 class GetProductoPlanOutputDtoBase
 {
-        public SkuProductoEntity $Sku;
+    public SkuProductoEntity $Sku;
 
     public ProductoSetupEntity $Setup;
-
 
     public ProductoPlanEntity $ProductoPlan;
 
     /**
-     * @var DetallePlanEntity
+     * @var DetallePlanEntity[]
      */
-    public array $DetallesPlan = [];
+    public $DetallesPlan = [];
 
 
     /**
-     * @var PaisProductoEntity
+     * @var PaisProductoEntity[]
      */
-    public array $Paises = [];
+    public $Paises = [];
 
      public function __construct() {}
 }

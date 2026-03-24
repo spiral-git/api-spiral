@@ -18,19 +18,19 @@ class GetProductoCotizableOutputDto
     public ProductoEntity $Producto;
 
     /**
-     * @var ImagenProductoEntity
+     * @var ImagenProductoEntity[]
      */
-    public array $Imagenes = [];
+    public $Imagenes = [];
 
     /**
-     * @var CategoriaProductoEntity
+     * @var CategoriaProductoEntity[]
      */
-    public array $Categorias = [];
+    public $Categorias = [];
 
     /**
-     * @var PaisProductoEntity
+     * @var PaisProductoEntity[]
      */
-    public array $Paises = [];
+    public  $Paises = [];
 
     public function __construct() {}
 }

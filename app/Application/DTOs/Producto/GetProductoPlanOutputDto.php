@@ -9,19 +9,19 @@ use App\Domain\Entity\ProductoEntity;
 class GetProductoPlanOutputDto
 {
     /**
-     * @var GetProductoPlanOutputDtoBase
+     * @var GetProductoPlanOutputDtoBase[]
      */
-    public array $Variantes;
+    public $Variantes;
 
     /**
-     * @var ImagenProductoEntity
+     * @var ImagenProductoEntity[]
      */
-    public array $Imagenes = [];
+    public $Imagenes = [];
 
     /**
-     * @var CategoriaProductoEntity
+     * @var CategoriaProductoEntity[]
      */
-    public array $Categorias = [];
+    public $Categorias = [];
 
     public ProductoEntity $Producto;
 }

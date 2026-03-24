@@ -20,9 +20,9 @@ class GetProductoVarianteOutputBase
     public ProductoVarianteEntity $ProductoVariante;
 
     /**
-     * @var PaisProductoEntity
+     * @var PaisProductoEntity[]
      */
-    public array $Paises = [];
+    public $Paises = [];
 
 
 
