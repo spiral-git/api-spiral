@@ -85,7 +85,7 @@ Route::prefix('producto')->group(function () {
     Route::post('/getall', [ProductoController::class, 'GetAll']);
     Route::post('/get-cotizable-by-id', [ProductoCotizacionController::class, 'GetById']);
     Route::post('/get-basico-by-id', [ProductoBasicoController::class, 'GetById']);
-    Route::post('/get-plan-by-id', [ProductoPlanController::class, 'GetById']);
+    Route::post('/get-planes', [ProductoPlanController::class, 'GetById']);
     Route::post('/get-variante-by-id', [ProductoVarianteController::class, 'GetById']);
 
 

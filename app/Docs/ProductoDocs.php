@@ -559,7 +559,7 @@ class ProductoDocs
 
     // Get plan By Id------------------------------------------------------------------
     #[OA\Post(
-        path: '/producto/get-plan-by-id',
+        path: '/producto/get-planes',
         tags: ['Producto'],
         summary: 'Obtener los datos de un producto plan por el id del producto',
         security: [['bearerAuth' => []]],
@@ -588,9 +588,9 @@ class ProductoDocs
             ),
         ]
     )]
-    public function get_plan_by_id() {}
+    public function doc_get_plan_by_id() {}
 
-    // Get plan By Id------------------------------------------------------------------
+    // Get variante By Id------------------------------------------------------------------
     #[OA\Post(
         path: '/producto/get-variante-by-id',
         tags: ['Producto'],
