@@ -88,6 +88,9 @@ Route::prefix('producto')->group(function () {
     Route::post('/get-planes', [ProductoPlanController::class, 'GetById']);
     Route::post('/get-variante-by-id', [ProductoVarianteController::class, 'GetById']);
 
+    Route::post('/hola', [ProductoPlanController::class, 'HolaMundo']);
+
+
 
 });
 

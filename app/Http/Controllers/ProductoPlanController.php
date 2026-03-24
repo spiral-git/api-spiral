@@ -95,5 +95,15 @@ class ProductoPlanController extends BaseController
         );
     }
 
+    public function HolaMundo()
+    {
+
+          
+        return response()->json(
+            "Hola mundo",
+             Response::HTTP_BAD_REQUEST
+        );
+    }
+
     
 }
