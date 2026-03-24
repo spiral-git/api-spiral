@@ -102,7 +102,6 @@ class DetallePlanRepository implements IDetallePlanRepository
 
             $rows = DB::table($this->table)
                 ->where('id_producto_plan', $idPlan)
-                ->where('status', true)
                 ->get();
 
             $entities = $rows->map(function ($row) {
