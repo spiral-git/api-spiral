@@ -11,9 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductoPlanController extends BaseController
 {
+    private UsuarioService $_usuarioService;
 
-    public function __construct()
+    private TipoUsuarioService $_tipoUsuarioService;
+
+    // private ProductoPlanService $_service;
+
+    public function __construct(UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService)
     {
+        $this->_usuarioService = $usuarioService;
+        $this->_tipoUsuarioService = $tipoUsuarioService;
+        // $this->_service = $service;
+        parent::__construct($this->_usuarioService, $this->_tipoUsuarioService);
     }
 
 
