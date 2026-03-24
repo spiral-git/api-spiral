@@ -626,21 +626,4 @@ class ProductoDocs
 
 
 
-
-
-
-    // Hola mundo------------------------------------------------------------------
-    #[OA\Post(
-        path: '/producto/hola',
-        tags: ['Producto'],
-        summary: 'Obtener los datos de un producto variante por el id del producto',
-        security: [['bearerAuth' => []]],
-        responses: [
-            new OA\Response(
-                response: 201,
-                description: 'producto obtenido correctamente'
-            ),
-        ]
-    )]
-    public function hola() {}
 }
