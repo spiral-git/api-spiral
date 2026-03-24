@@ -5,6 +5,7 @@ namespace App\Infrastructure\Adapters;
 use App\Domain\Entity\ProductoEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IProductoRepository;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -89,11 +90,11 @@ class ProductoRepository implements IProductoRepository
 
             $productos = collect($paginator->items())->map(function ($row) {
                 $producto = new ProductoEntity;
-                $producto->Id = $row->producto_id;
+                $producto->Id = $row->id;
                 $producto->Nombre = $row->nombre;
-                $producto->Descripcion = $row->descripcion_producto;
+                $producto->Descripcion = $row->descripcion;
                 $producto->ValoracionGeneral = $row->valoracion_general;
-                $producto->CreateAt = new \DateTime($row->created_at);
+                $producto->CreateAt = new DateTime($row->created_at);
                 $producto->IdLenguaje = $row->id_lenguaje;
                 $producto->IdTipoPago = $row->id_tipo_pago;
                 $producto->IdTipoProducto = $row->id_tipo_producto;
