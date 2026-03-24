@@ -166,6 +166,9 @@ class ProductoPlanService
                 return $skuResp;
             }
 
+                return $skuResp;
+
+
             $imagenesProductoResp = $this->_imagenProductoService->GetAllByProducto($id, $lang);
             if (! $imagenesProductoResp->IsSuccess) {
                 return $imagenesProductoResp;
@@ -207,7 +210,7 @@ class ProductoPlanService
 
 
                 $output = new GetProductoPlanOutputDtoBase;
-                $output->Sku = $skuResp->Data;
+                $output->Sku = $Sku;
                 $output->Setup = $setupResp->Data;
                 $output->ProductoPlan = $productoPlanResp->Data;
                 $output->DetallesPlan = $detallesPlanResp->Data;

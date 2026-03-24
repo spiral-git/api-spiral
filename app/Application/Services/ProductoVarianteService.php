@@ -196,7 +196,7 @@ class ProductoVarianteService
                 }
 
                 $output = new GetProductoVarianteOutputBase;
-                $output->Sku = $skuResp->Data;
+                $output->Sku = $Sku;
                 $output->Setup = $setupResp->Data;
                 $output->ProductoVariante = $productoVarianteResp->Data;
                 $output->Paises = $paisesProductoResp->Data;
