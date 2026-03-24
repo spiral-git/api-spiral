@@ -66,6 +66,12 @@ class ProductoPlanController extends BaseController
 
     public function GetById(Request $request)
     {
+
+            return response()->json(
+                "Hola mundo",
+                Response::HTTP_UNAUTHORIZED
+            );
+        
         $lang = $request->input('lang') ?? 'es';
         $id = $request->input('id') ?? 0;
 
@@ -78,6 +84,8 @@ class ProductoPlanController extends BaseController
                 Response::HTTP_UNAUTHORIZED
             );
         }
+
+        
 
         $respuesta = $this->_service->GetById($lang, $id);
 

@@ -166,9 +166,6 @@ class ProductoPlanService
                 return $skuResp;
             }
 
-                return $skuResp;
-
-
             $imagenesProductoResp = $this->_imagenProductoService->GetAllByProducto($id, $lang);
             if (! $imagenesProductoResp->IsSuccess) {
                 return $imagenesProductoResp;
