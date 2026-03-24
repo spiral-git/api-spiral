@@ -7,6 +7,7 @@ use App\Application\Services\ProductoPlanService;
 use App\Application\Services\ProductoService;
 use App\Application\Services\SkuService;
 use App\Domain\Entity\RespuestaEntity;
+use App\Domain\Ports\IProductoPlanRepository;
 
 class DetallePlanValidation
 {
@@ -29,11 +30,11 @@ class DetallePlanValidation
         ],
     ];
 
-    public static function validar(DetallePlanInputDto $dto, string $lang, int $ownerId, ProductoPlanService $productoPlanService, SkuService $skuService, ProductoService $productoService): RespuestaEntity
+    public static function validar(DetallePlanInputDto $dto, string $lang, int $ownerId, IProductoPlanRepository $productoPlanRepository, SkuService $skuService, ProductoService $productoService): RespuestaEntity
     {
         $errores = [];
 
-        self::validarPlan($dto->IdProductoPlan, $errores, $lang, $ownerId, $productoPlanService, $skuService, $productoService);
+        self::validarPlan($dto->IdProductoPlan, $errores, $lang, $ownerId, $productoPlanRepository, $skuService, $productoService);
         self::validarDetalle($dto->Detalle, $errores, $lang);
 
         return new RespuestaEntity(
@@ -43,7 +44,7 @@ class DetallePlanValidation
         );
     }
 
-    private static function validarPlan(?int $valor, array &$errores, string $lang, int $ownerId, ProductoPlanService $productoPlanService, SkuService $skuService, ProductoService $productoService): void
+    private static function validarPlan(?int $valor, array &$errores, string $lang, int $ownerId, IProductoPlanRepository $productoPlanRepository, SkuService $skuService, ProductoService $productoService): void
     {
         if (empty($valor) || $valor <= 0) {
             $errores['producto_plan'] = self::$translations[$lang]['validation_idplan'];
@@ -51,7 +52,7 @@ class DetallePlanValidation
             return;
         }
 
-        $resp = $productoPlanService->GetById($valor, $lang);
+        $resp = $productoPlanRepository->GetById($valor, $lang);
         if (! $resp->IsSuccess) {
             $errores['producto_plan'] = $resp->Message;
 

@@ -15,13 +15,13 @@ class ProductoPlanController extends BaseController
 
     private TipoUsuarioService $_tipoUsuarioService;
 
-    // private ProductoPlanService $_service;
+    private ProductoPlanService $_service;
 
-    public function __construct(UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService)
+    public function __construct(UsuarioService $usuarioService, TipoUsuarioService $tipoUsuarioService, ProductoPlanService $service)
     {
         $this->_usuarioService = $usuarioService;
         $this->_tipoUsuarioService = $tipoUsuarioService;
-        // $this->_service = $service;
+        $this->_service = $service;
         parent::__construct($this->_usuarioService, $this->_tipoUsuarioService);
     }
 

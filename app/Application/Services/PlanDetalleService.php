@@ -7,6 +7,7 @@ use App\Application\Validations\DetallePlanValidation;
 use App\Domain\Entity\DetallePlanEntity;
 use App\Domain\Entity\RespuestaEntity;
 use App\Domain\Ports\IDetallePlanRepository;
+use App\Domain\Ports\IProductoPlanRepository;
 use Exception;
 
 class PlanDetalleService
@@ -15,7 +16,7 @@ class PlanDetalleService
 
     protected ProductoService $_productoService;
 
-    protected ProductoPlanService $_productoPlanService;
+    protected IProductoPlanRepository $_productoPlanRepository;
 
     protected IDetallePlanRepository $_repository;
 
@@ -32,20 +33,19 @@ class PlanDetalleService
         ],
     ];
 
-    public function __construct(IDetallePlanRepository $repository, SkuService $skuService, ProductoService $productoService, ProductoPlanService $productoPlanService)
+    public function __construct(IDetallePlanRepository $repository, SkuService $skuService, ProductoService $productoService, IProductoPlanRepository $productoPlanRepository)
     {
         $this->_skuService = $skuService;
         $this->_productoService = $productoService;
         $this->_repository = $repository;
-        $this->_productoPlanService = $productoPlanService;
-
+        $this->_productoPlanRepository = $productoPlanRepository;
     }
 
     public function Created(DetallePlanInputDto $dto, string $lang, int $ownerId): RespuestaEntity
     {
         try {
 
-            $validacionesResp = DetallePlanValidation::validar($dto, $lang, $ownerId, $this->_productoPlanService, $this->_skuService, $this->_productoService);
+            $validacionesResp = DetallePlanValidation::validar($dto, $lang, $ownerId, $this->_productoPlanRepository, $this->_skuService, $this->_productoService);
 
             if (! $validacionesResp->IsSuccess) {
                 return $validacionesResp;
