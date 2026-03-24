@@ -201,9 +201,9 @@ class ProductoPlanService
                 }
 
                 $detallesPlanResp = $this->_planDetalleService->GetById($productoPlanResp->Data->Id, $lang);
-                if (! $detallesPlanResp->IsSuccess) {
-                    return $detallesPlanResp;
-                }
+                // if (! $detallesPlanResp->IsSuccess) {
+                //     return $detallesPlanResp;
+                // }
 
 
                 $output = new GetProductoPlanOutputDtoBase;
