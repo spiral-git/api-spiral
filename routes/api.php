@@ -79,13 +79,13 @@ Route::prefix('producto')->group(function () {
     Route::post('/create-cotizacion', [ProductoCotizacionController::class, 'Create']);
     Route::post('/create-basico', [ProductoBasicoController::class, 'Create']);
     Route::post('/create-variante', [ProductoVarianteController::class, 'Create']);
-    Route::post('/create-plan', [ProductoPlanController::class, 'Create']);
+    // Route::post('/create-plan', [ProductoPlanController::class, 'Create']);
     Route::post('/create-detalle-plan', [DetallePlanController::class, 'Create']);
 
     Route::post('/getall', [ProductoController::class, 'GetAll']);
     Route::post('/get-cotizable-by-id', [ProductoCotizacionController::class, 'GetById']);
     Route::post('/get-basico-by-id', [ProductoBasicoController::class, 'GetById']);
-    Route::post('/get-planes', [ProductoPlanController::class, 'GetById']);
+    // Route::post('/get-planes', [ProductoPlanController::class, 'GetById']);
     Route::post('/get-variante-by-id', [ProductoVarianteController::class, 'GetById']);
 
     Route::post('/hola', [ProductoPlanController::class, 'HolaMundo']);
