@@ -109,6 +109,8 @@ class DetallePlanRepository implements IDetallePlanRepository
                 $entity->Id = $row->id;
                 $entity->IdProductoPlan = $row->id_producto_plan;
                 $entity->Detalle = $row->detalle;
+
+                return $entity;
             });
 
             return new RespuestaEntity(
