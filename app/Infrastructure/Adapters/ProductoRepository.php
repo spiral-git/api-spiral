@@ -80,17 +80,17 @@ class ProductoRepository implements IProductoRepository
 
             // 👇 Aplicar filtro SOLO si viene con valor
             if (! empty(trim($filter))) {
-                $query->where('nombre_producto', 'LIKE', '%'.$filter.'%');
+                $query->where('nombre', 'LIKE', '%'.$filter.'%');
             }
 
-            $query->orderBy('nombre_producto');
+            $query->orderBy('nombre');
 
             $paginator = $query->paginate($perPage, ['*'], 'page', $page);
 
             $productos = collect($paginator->items())->map(function ($row) {
                 $producto = new ProductoEntity;
                 $producto->Id = $row->producto_id;
-                $producto->Nombre = $row->nombre_producto;
+                $producto->Nombre = $row->nombre;
                 $producto->Descripcion = $row->descripcion_producto;
                 $producto->ValoracionGeneral = $row->valoracion_general;
                 $producto->CreateAt = new \DateTime($row->created_at);
